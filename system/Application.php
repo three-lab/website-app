@@ -4,6 +4,7 @@ namespace System;
 
 use App\Exceptions\PageNotFoundException;
 use App\Kernel;
+use System\Utils\Request;
 
 class Application
 {
@@ -39,7 +40,10 @@ class Application
 
     private function generateResponse(array $route)
     {
-        $response = call_user_func([new $route['controller'], $route['method']]);
+        $response = call_user_func(
+            [new $route['controller'], $route['method']],
+            (new Request)
+        );
 
         if(is_string($response)) echo $response;
         if(is_array($response)) echo json_encode($response);

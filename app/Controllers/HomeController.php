@@ -2,10 +2,13 @@
 
 namespace App\Controllers;
 
+use System\Utils\Request;
+
 class HomeController
 {
-    public function index()
+    public function index(Request $request)
     {
+        echo $request->fullname;
         return config("app.name");
     }
 
