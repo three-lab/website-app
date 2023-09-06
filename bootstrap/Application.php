@@ -27,7 +27,15 @@ class Application
 
         if(empty($route)) throw new PageNotFoundException;
 
-        $response = call_user_func([new $route['controller'], $route['method']], "sip");
+        if(!$route['middleware']) {
+            $this->generateResponse($route);
+            return;
+        }
+    }
+
+    private function generateResponse(array $route)
+    {
+        $response = call_user_func([new $route['controller'], $route['method']]);
 
         if(is_string($response)) echo $response;
         if(is_array($response)) echo json_encode($response);
