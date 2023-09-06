@@ -6,7 +6,7 @@ class HomeController
 {
     public function index()
     {
-        return "Home";
+        return config("app.name");
     }
 
     public function article()
