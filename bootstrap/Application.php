@@ -3,6 +3,7 @@
 namespace App\Bootstrap;
 
 use App\Exceptions\PageNotFoundException;
+use App\Kernel;
 
 class Application
 {
@@ -27,10 +28,13 @@ class Application
 
         if(empty($route)) throw new PageNotFoundException;
 
-        if(!$route['middleware']) {
+        if(is_null($route['middleware'])) {
             $this->generateResponse($route);
             return;
         }
+
+        $middlewares = (new Kernel)->middlewareAliasses;
+        (new $middlewares[$route['middleware']])->handle(fn() => $this->generateResponse($route));
     }
 
     private function generateResponse(array $route)

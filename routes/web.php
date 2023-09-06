@@ -3,8 +3,8 @@
 use App\Bootstrap\Route;
 use App\Controllers\HomeController;
 
-Route::prefix('/article', function() {
-    Route::post('/read', [HomeController::class, 'article']);
+Route::middleware('auth', function() {
+    Route::post('/article/read', [HomeController::class, 'article']);
 });
 
 Route::get('/home', [HomeController::class, 'index']);
