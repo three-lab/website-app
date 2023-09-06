@@ -17,5 +17,8 @@
             "name": "irsyadulibad",
             "email": "ahmadirsyadulibad7@gmail.com"
         }
-    ]
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.5"
+    }
 }
