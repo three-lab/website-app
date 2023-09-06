@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bootstrap;
+namespace System;
 
 use App\Exceptions\PageNotFoundException;
 use App\Kernel;

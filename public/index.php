@@ -1,6 +1,6 @@
 <?php
 
-use App\Bootstrap\Application;
+use System\Application;
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
 
