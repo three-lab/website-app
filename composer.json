@@ -9,6 +9,7 @@
             "System\\": "system/"
         },
         "files": [
+            "./system/helpers.php",
             "./app/helpers.php"
         ]
     },
