@@ -1,6 +1,6 @@
 <?php
 
-use System\Route;
+use System\Utils\Route;
 use App\Controllers\HomeController;
 
 Route::middleware('auth', function() {

@@ -5,6 +5,7 @@ namespace System;
 use App\Exceptions\PageNotFoundException;
 use App\Kernel;
 use System\Utils\Request;
+use System\Utils\Route;
 
 class Application
 {
