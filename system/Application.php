@@ -9,9 +9,13 @@ use System\Utils\Route;
 
 class Application
 {
+    private array $routeParams = [];
+
     public function __construct(
         private array $routes
-    ) {}
+    ) {
+        $this->routeParams[0] = new Request;
+    }
 
     public static function register()
     {
@@ -24,11 +28,9 @@ class Application
 
     public function run()
     {
-        $path = $_SERVER['PATH_INFO'] ?? '/';
-        $route = in_array($path, array_keys($this->routes)) ?
-            $this->routes[$path] : [];
+        $route = $this->handleRoute();
 
-        if(empty($route)) throw new PageNotFoundException;
+        if(!$route) throw new PageNotFoundException;
 
         if(is_null($route['middleware'])) {
             $this->generateResponse($route);
@@ -39,11 +41,35 @@ class Application
         (new $middlewares[$route['middleware']])->handle(fn() => $this->generateResponse($route));
     }
 
+    private function handleRoute(): array|bool
+    {
+        $path = $_SERVER['PATH_INFO'] ?? '/';
+
+        foreach($this->routes as $route => $action) {;
+            $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $route);
+            $matched = boolval(preg_match_all("#^{$pattern}$#", $path, $params, PREG_OFFSET_CAPTURE));
+
+            if(!$matched) continue;
+
+            $this->parseRouteParams($params);
+            return $action;
+        }
+
+        return false;
+    }
+
+    private function parseRouteParams($params) {
+        array_shift($params);
+
+        foreach($params as $param)
+            $this->routeParams[] = $param[0][0];
+    }
+
     private function generateResponse(array $route)
     {
-        $response = call_user_func(
+        $response = call_user_func_array(
             [new $route['controller'], $route['method']],
-            (new Request)
+            $this->routeParams
         );
 
         if(is_string($response)) echo $response;

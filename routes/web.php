@@ -1,14 +1,8 @@
 <?php
 
+use App\Controllers\ArticleController;
 use System\Utils\Route;
 use App\Controllers\HomeController;
 
-Route::middleware('auth', function() {
-    Route::post('/article/read', [HomeController::class, 'article']);
-});
-
-Route::get('/home', [HomeController::class, 'index']);
-
-Route::middleware('auth', function() {
-    Route::get('/admin', [HomeController::class, 'admin']);
-});
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/article/{id}', [ArticleController::class, 'show']);
