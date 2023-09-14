@@ -4,6 +4,7 @@ namespace System;
 
 use App\Exceptions\PageNotFoundException;
 use App\Kernel;
+use System\Components\Database;
 use System\Utils\Request;
 use System\Utils\Route;
 
@@ -15,6 +16,7 @@ class Application
         private array $routes
     ) {
         $this->routeParams[0] = new Request;
+        Database::boot();
     }
 
     public static function register()

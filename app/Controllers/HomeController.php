@@ -8,8 +8,7 @@ class HomeController
 {
     public function index(Request $request)
     {
-        echo $request->fullname;
-        return config("app.name");
+
     }
 
     public function article()
