@@ -8,7 +8,7 @@ class HomeController
 {
     public function index(Request $request)
     {
-
+        return view('home');
     }
 
     public function article()
