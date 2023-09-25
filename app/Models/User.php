@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use System\Components\Model;
 
 class User extends Model
 {
-
+    protected string $table = 'users';
 }

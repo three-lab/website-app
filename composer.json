@@ -21,7 +21,6 @@
     ],
     "require": {
         "vlucas/phpdotenv": "^5.5",
-        "illuminate/database": "^10.23",
         "latte/latte": "^3.0"
     }
 }
