@@ -21,6 +21,7 @@
     ],
     "require": {
         "vlucas/phpdotenv": "^5.5",
-        "latte/latte": "^3.0"
+        "latte/latte": "^3.0",
+        "somnambulist/validation": "^1.7"
     }
 }

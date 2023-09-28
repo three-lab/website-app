@@ -2,13 +2,11 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
-use System\Utils\Request;
+use System\Components\Request;
 
 class ArticleController
 {
     public function show(Request $request, $id)
     {
-
     }
 }

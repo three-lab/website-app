@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c0795db4bafb9a224609feadf9c51e88",
+    "content-hash": "107191c9221d3b4994c2553bcfe203da",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -227,6 +227,58 @@
                 }
             ],
             "time": "2023-02-25T19:38:58+00:00"
+        },
+        {
+            "name": "somnambulist/validation",
+            "version": "1.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/somnambulist-tech/validation.git",
+                "reference": "e6c532be356865f1ee7a16a799104732d8a5d5a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/somnambulist-tech/validation/zipball/e6c532be356865f1ee7a16a799104732d8a5d5a7",
+                "reference": "e6c532be356865f1ee7a16a799104732d8a5d5a7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "doctrine/dbal": "^3.1.0",
+                "phpunit/phpunit": "^9.5",
+                "ramsey/uuid": "^4.3",
+                "symfony/var-dumper": "^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Somnambulist\\Components\\Validation\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dave Redfern",
+                    "email": "info@somnambulist.tech"
+                }
+            ],
+            "description": "A re-write of rakit/validation providing Laravel like validation as a standalone library",
+            "keywords": [
+                "php",
+                "symfony",
+                "validation"
+            ],
+            "support": {
+                "issues": "https://github.com/somnambulist-tech/validation/issues",
+                "source": "https://github.com/somnambulist-tech/validation/tree/1.7.0"
+            },
+            "time": "2023-01-23T19:45:30+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",

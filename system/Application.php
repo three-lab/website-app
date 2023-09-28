@@ -4,10 +4,9 @@ namespace System;
 
 use App\Exceptions\PageNotFoundException;
 use App\Kernel;
-use System\Components\Database;
 use System\Components\Model;
-use System\Utils\Request;
-use System\Utils\Route;
+use System\Components\Request;
+use System\Components\Route;
 
 class Application
 {

@@ -2,15 +2,8 @@
 
 namespace System\Utils;
 
-class Request
+trait RequestData
 {
-    private array $_data;
-
-    public function __construct()
-    {
-        $this->_data = $_REQUEST;
-    }
-
     public function __set($name, $value)
     {
         return $this->_data[$name] = $value;
