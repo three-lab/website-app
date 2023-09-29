@@ -4,8 +4,8 @@ namespace System;
 
 use App\Exceptions\PageNotFoundException;
 use App\Kernel;
+use ReflectionMethod;
 use System\Components\Model;
-use System\Components\Request;
 use System\Components\Route;
 
 class Application
@@ -15,7 +15,6 @@ class Application
     public function __construct(
         private array $routes
     ) {
-        $this->routeParams[0] = new Request;
         Model::boot();
     }
 
@@ -60,18 +59,39 @@ class Application
         return false;
     }
 
-    private function parseRouteParams($params) {
+    private function parseRouteParams($params)
+    {
         array_shift($params);
 
         foreach($params as $param)
             $this->routeParams[] = $param[0][0];
     }
 
+    private function injectParams(string $controller, string $method)
+    {
+        $args = [];
+        $method = new ReflectionMethod($controller, $method);
+        $params = $method->getParameters();
+
+        foreach($params as $param) {
+            if(!is_object($param->getType())) continue;
+
+            $paramClass = $param->getType()->getName();
+            $args[] = (new $paramClass);
+        }
+
+        return $args;
+    }
+
     private function generateResponse(array $route)
     {
+        $controller = $route['controller'];
+        $method = $route['method'];
+
+        $params = $this->injectParams($controller, $method);
         $response = call_user_func_array(
-            [new $route['controller'], $route['method']],
-            $this->routeParams
+            [new $controller, $method],
+            array_merge($params, $this->routeParams),
         );
 
         if(is_string($response)) echo $response;

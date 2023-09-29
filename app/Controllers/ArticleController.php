@@ -2,11 +2,12 @@
 
 namespace App\Controllers;
 
-use System\Components\Request;
+use App\Requests\ArticleRequest;
 
 class ArticleController
 {
-    public function show(Request $request, $id)
+    public function show(ArticleRequest $request, $id)
     {
+
     }
 }
