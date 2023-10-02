@@ -2,6 +2,7 @@
 
 use Josantonius\Session\Session;
 use System\Utils\Config;
+use System\Utils\Redirect;
 use System\Utils\View;
 
 if(!function_exists('env')) {
@@ -32,5 +33,11 @@ if(!function_exists('view')) {
 if(!function_exists('session')) {
     function session() {
         return (new Session);
+    }
+}
+
+if(!function_exists('redirect')) {
+    function redirect(string $route) {
+        return (new Redirect($route));
     }
 }
