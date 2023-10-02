@@ -4,6 +4,7 @@ namespace System;
 
 use App\Exceptions\PageNotFoundException;
 use App\Kernel;
+use Josantonius\Session\Facades\Session;
 use ReflectionMethod;
 use System\Components\Model;
 use System\Components\Route;
@@ -16,6 +17,7 @@ class Application
         private array $routes
     ) {
         Model::boot();
+        Session::start(config('session'));
     }
 
     public static function register()

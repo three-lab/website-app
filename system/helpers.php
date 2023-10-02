@@ -1,5 +1,6 @@
 <?php
 
+use Josantonius\Session\Session;
 use System\Utils\Config;
 use System\Utils\View;
 
@@ -12,7 +13,7 @@ if(!function_exists('env')) {
 if(!function_exists('config')) {
     function config(string $name) {
         $config = explode('.', trim($name));
-        return Config::getConfig($config[0], $config[1]);
+        return Config::getConfig($config[0], $config[1] ?? null);
     }
 }
 
@@ -25,5 +26,11 @@ if(!function_exists('base_path')) {
 if(!function_exists('view')) {
     function view(string $view, array $params = []) {
         return View::render($view, $params);
+    }
+}
+
+if(!function_exists('session')) {
+    function session() {
+        return (new Session);
     }
 }
