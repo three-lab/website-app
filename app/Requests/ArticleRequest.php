@@ -8,6 +8,8 @@ class ArticleRequest extends Request
 {
     protected function rules(): array
     {
-        return [];
+        return [
+            'title' => 'required',
+        ];
     }
 }

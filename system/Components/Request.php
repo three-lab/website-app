@@ -48,6 +48,9 @@ class Request
 
     protected function failedValidation(ErrorBag $errors)
     {
-        // return redirect('')
+        return redirect()
+            ->back()
+            ->withInput()
+            ->with('errors', $errors->firstOfAll());
     }
 }

@@ -11,8 +11,8 @@ class ArticleController
         return view('article/create');
     }
 
-    public function store(ArticleRequest $request, $id)
+    public function store(ArticleRequest $request)
     {
-        return [];
+        return $request->all();
     }
 }

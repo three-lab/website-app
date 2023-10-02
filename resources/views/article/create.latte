@@ -9,7 +9,8 @@
     <form action="" method="post">
         <div>
             <label for="title">Judul</label>
-            <input type="text" name="title" id="title">
+            <input type="text" class="form-control {error('title') ? 'is-invalid' : ''}" name="title" id="title" value="{old('title')}">
+            <small>{error('title')}</small>
         </div>
 
         <button type="submit">submit</button>

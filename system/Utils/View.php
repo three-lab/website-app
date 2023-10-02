@@ -25,7 +25,13 @@ class View
     public static function render(string $path, array $params = [])
     {
         static::setFactory();
+
         $path = str_replace('.', '/', $path);
+        $errors = session()->pull('errors', []);
+        $old = session()->pull('prev_input', []);
+
+        static::$latte->addFunction('error', fn(string $name) => isset($errors[$name]) ? $errors[$name] : false);
+        static::$latte->addFunction('old', fn(string $name) => isset($old[$name]) ? $old[$name] : false);
 
         return static::$latte->renderToString("{$path}.latte", $params);
     }

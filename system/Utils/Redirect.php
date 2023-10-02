@@ -3,6 +3,7 @@
 namespace System\Utils;
 
 use Josantonius\Session\Facades\Session;
+use System\Components\Request;
 
 class Redirect
 {
@@ -25,8 +26,15 @@ class Redirect
         return $this;
     }
 
+    public function withInput()
+    {
+        Session::set('prev_input', (new Request)->all());
+        return $this;
+    }
+
     public function __destruct()
     {
         header("Location: {$this->route}");
+        exit;
     }
 }
