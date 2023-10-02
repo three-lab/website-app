@@ -50,7 +50,7 @@ class Application
         $method = $_SERVER['REQUEST_METHOD'];
 
         foreach($this->routes as $route) {
-            $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $route['route']);
+            $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $route['path']);
             $matched = boolval(preg_match_all("#^{$pattern}$#", $path, $params, PREG_OFFSET_CAPTURE));
 
             if(!$matched) continue;

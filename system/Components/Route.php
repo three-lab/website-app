@@ -11,7 +11,7 @@ class Route
     public static function get(string $path, array $action)
     {
         static::$routes[] = [
-            'route' => static::$prefix . $path,
+            'path' => static::$prefix . $path,
             'type' => 'GET',
             'controller' => $action[0],
             'method' => $action[1],
@@ -22,7 +22,7 @@ class Route
     public static function post(string $path, array $action)
     {
         static::$routes[] = [
-            'route' => static::$prefix . $path,
+            'path' => static::$prefix . $path,
             'type' => 'POST',
             'controller' => $action[0],
             'method' => $action[1],
