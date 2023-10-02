@@ -47,12 +47,14 @@ class Application
     private function handleRoute(): array|bool
     {
         $path = $_SERVER['PATH_INFO'] ?? '/';
+        $method = $_SERVER['REQUEST_METHOD'];
 
         foreach($this->routes as $route => $action) {;
             $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $route);
             $matched = boolval(preg_match_all("#^{$pattern}$#", $path, $params, PREG_OFFSET_CAPTURE));
 
             if(!$matched) continue;
+            if($action['type'] != $method) continue;
 
             $this->parseRouteParams($params);
             return $action;

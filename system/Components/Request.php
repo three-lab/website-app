@@ -33,7 +33,7 @@ class Request
             return;
         }
 
-        $this->failedValidation($validation->errors());
+        return $this->failedValidation($validation->errors());
     }
 
     public function validated()
@@ -48,6 +48,6 @@ class Request
 
     protected function failedValidation(ErrorBag $errors)
     {
-        var_dump($errors->firstOfAll());
+        // return redirect('')
     }
 }

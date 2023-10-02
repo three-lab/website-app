@@ -37,7 +37,7 @@ if(!function_exists('session')) {
 }
 
 if(!function_exists('redirect')) {
-    function redirect(string $route) {
+    function redirect(string $route = '') {
         return (new Redirect($route));
     }
 }

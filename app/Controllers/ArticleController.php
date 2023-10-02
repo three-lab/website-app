@@ -6,8 +6,13 @@ use App\Requests\ArticleRequest;
 
 class ArticleController
 {
-    public function show(ArticleRequest $request, $id)
+    public function create()
     {
+        return view('article/create');
+    }
 
+    public function store(ArticleRequest $request, $id)
+    {
+        return [];
     }
 }
