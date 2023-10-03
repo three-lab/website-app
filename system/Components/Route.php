@@ -39,7 +39,7 @@ class Route
 
     public static function prefix(string $prefix, callable $callback)
     {
-        static::$prefix = static::$prefix . $prefix;
+        static::$prefix .= $prefix;
         $callback();
         static::$prefix = '';
     }
