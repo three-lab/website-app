@@ -14,6 +14,7 @@ class Application
     private array $routeParams = [];
 
     public function __construct(
+        private Kernel $kernel,
         private array $routes
     ) {
         Model::boot();
@@ -22,10 +23,12 @@ class Application
 
     public static function register()
     {
-        require '../routes/web.php';
-        $routes = Route::getRoutes();
+        $kernel = new Kernel;
+        $kernel->routes();
 
-        $app = new self($routes);
+        $routes = Route::getRoutes();
+        $app = new self($kernel, $routes);
+
         return $app;
     }
 
@@ -40,7 +43,7 @@ class Application
             return;
         }
 
-        $middlewares = (new Kernel)->middlewareAliasses;
+        $middlewares = $this->kernel->middlewareAliasses;
         (new $middlewares[$route['middleware']])->handle(fn() => $this->generateResponse($route));
     }
 
