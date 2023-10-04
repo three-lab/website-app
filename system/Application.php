@@ -36,8 +36,7 @@ class Application
     {
         $route = $this->handleRoute();
 
-        if(!$route) throw new PageNotFoundException;
-
+        if(!$route) return abort(404);
         if(is_null($route['middleware'])) {
             $this->generateResponse($route);
             return;

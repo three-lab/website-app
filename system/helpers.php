@@ -1,6 +1,7 @@
 <?php
 
 use Josantonius\Session\Session;
+use Latte\RuntimeException;
 use System\Utils\Config;
 use System\Utils\Redirect;
 use System\Utils\View;
@@ -39,5 +40,17 @@ if(!function_exists('session')) {
 if(!function_exists('redirect')) {
     function redirect(string $route = '') {
         return (new Redirect($route));
+    }
+}
+
+if(!function_exists('abort')) {
+    function abort($code) {
+        http_response_code($code);
+
+        try {
+            return view("errors/$code");
+        } catch(RuntimeException) {
+            echo "Error: $code";
+        }
     }
 }
