@@ -12,10 +12,14 @@ try {
     $env->load();
 } catch(InvalidPathException $e) {}
 
+$debugMode = filter_var(env('APP_DEBUG'), FILTER_VALIDATE_BOOL);
+
 // Initialize pretty error page
-$whoops = new \Whoops\Run;
-$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-$whoops->register();
+if($debugMode) {
+    $whoops = new \Whoops\Run;
+    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+    $whoops->register();
+}
 
 // Run Application
 $app = Application::register();
