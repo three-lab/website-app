@@ -48,7 +48,7 @@ if(!function_exists('abort')) {
         http_response_code($code);
 
         try {
-            return view("errors/$code");
+            echo view("error", compact('code'));
         } catch(RuntimeException) {
             echo "Error: $code";
         }
