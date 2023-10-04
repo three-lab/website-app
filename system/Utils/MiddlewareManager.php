@@ -16,21 +16,22 @@ class MiddlewareManager
     {
         $next = $this->nextAction;
 
-        foreach(array_reverse($this->middlewares) as $middleware)
-            $next = $this->createClosure(
-                array_key_exists($middleware, $this->aliasses) ?
-                    $this->aliasses[$middleware] :
-                    $middleware,
-                $next
-            );
+        foreach(array_reverse($this->middlewares) as $middleware) {
+            $exp = explode(':', $middleware);
+            $param = $exp[1] ?? null;
+            $middleware = array_key_exists($exp[0], $this->aliasses) ?
+                $this->aliasses[$exp[0]] : $exp[0];
+
+            $next = $this->createClosure($middleware, $next, $param);
+        }
 
         return $next($request);
     }
 
-    private function createClosure(string $middleware, callable $next): callable
+    private function createClosure(string $middleware, callable $next, ?string $param): callable
     {
-        return function($request) use($middleware, $next) {
-            return (new $middleware)->handle($request, $next);
+        return function($request) use($middleware, $next, $param) {
+            return (new $middleware)->handle($request, $next, $param);
         };
     }
 }
