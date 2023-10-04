@@ -1,10 +1,11 @@
 <?php
 
-use App\Controllers\ArticleController;
+use App\Controllers\Auth\LoginController;
 use System\Components\Route;
-use App\Controllers\HomeController;
 
-Route::get('/', [HomeController::class, 'index']);
-Route::get('/article', [ArticleController::class, 'create']);
-Route::post('/article', [ArticleController::class, 'store']);
-Route::get('/article/{id}', [ArticleController::class, 'show']);
+Route::prefix('/auth', function() {
+    Route::middleware('guest', function() {
+        Route::get('/login', [LoginController::class, 'show']);
+        Route::post('/login', [LoginController::class, 'login']);
+    });
+});

@@ -8,6 +8,7 @@ class Kernel
 {
     public array $middlewareAliasses = [
         'auth' => \App\Middlewares\AuthMiddleware::class,
+        'guest' => \App\Middlewares\GuestMiddleware::class,
     ];
 
     public function routes()

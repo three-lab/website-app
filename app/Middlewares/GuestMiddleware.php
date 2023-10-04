@@ -4,7 +4,7 @@ namespace App\Middlewares;
 
 use System\Components\Request;
 
-class AuthMiddleware
+class GuestMiddleware
 {
     public function handle(Request $request, callable $next)
     {

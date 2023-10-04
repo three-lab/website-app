@@ -7,7 +7,9 @@ use App\Kernel;
 use Josantonius\Session\Facades\Session;
 use ReflectionMethod;
 use System\Components\Model;
+use System\Components\Request;
 use System\Components\Route;
+use System\Utils\MiddlewareManager;
 
 class Application
 {
@@ -37,13 +39,18 @@ class Application
         $route = $this->handleRoute();
 
         if(!$route) return abort(404);
-        if(is_null($route['middleware'])) {
+        if(is_null($route['middlewares'])) {
             $this->generateResponse($route);
             return;
         }
 
-        $middlewares = $this->kernel->middlewareAliasses;
-        (new $middlewares[$route['middleware']])->handle(fn() => $this->generateResponse($route));
+        $manager = new MiddlewareManager(
+            $this->kernel->middlewareAliasses,
+            $route['middlewares'],
+            fn() => $this->generateResponse($route)
+        );
+
+        $manager->handle(new Request);
     }
 
     private function handleRoute(): array|bool

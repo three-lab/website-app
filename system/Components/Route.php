@@ -5,7 +5,7 @@ namespace System\Components;
 class Route
 {
     private static array $routes = [];
-    private static string|null $middleware = null;
+    private static array $middlewares = [];
     private static string $prefix = '';
 
     public static function get(string $path, array $action)
@@ -15,7 +15,7 @@ class Route
             'type' => 'GET',
             'controller' => $action[0],
             'method' => $action[1],
-            'middleware' => static::$middleware,
+            'middlewares' => static::$middlewares,
         ];
     }
 
@@ -26,15 +26,20 @@ class Route
             'type' => 'POST',
             'controller' => $action[0],
             'method' => $action[1],
-            'middleware' => static::$middleware,
+            'middlewares' => static::$middlewares,
         ];
     }
 
-    public static function middleware(string $name, callable $callback)
+    public static function middleware(string|array $middleware, callable $callback)
     {
-        static::$middleware = $name;
+        if(is_string($middleware))
+            static::$middlewares[] = $middleware;
+
+        if(is_array($middleware))
+            static::$middlewares = array_merge(static::$middlewares, $middleware);
+
         $callback();
-        static::$middleware = null;
+        static::$middlewares = [];
     }
 
     public static function prefix(string $prefix, callable $callback)
