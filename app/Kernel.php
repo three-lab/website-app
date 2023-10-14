@@ -8,14 +8,21 @@ class Kernel
 {
     public array $middlewareAliasses = [
         'auth' => \App\Middlewares\AuthMiddleware::class,
+        'api' => \App\Middlewares\ApiMiddleware::class,
         'guest' => \App\Middlewares\GuestMiddleware::class,
+        'web' => \App\Middlewares\WebMiddleware::class,
     ];
 
     public function routes()
     {
         // Web routes
-        Route::prefix('', fn() => require '../routes/web.php');
+        Route::middleware('web', function() {
+            Route::prefix('', fn() => require '../routes/web.php');
+        });
+
         // API routes
-        Route::prefix('/api', fn() => require '../routes/api.php');
+        Route::middleware('api', function() {
+            Route::prefix('/api', fn() => require '../routes/api.php');
+        });
     }
 }

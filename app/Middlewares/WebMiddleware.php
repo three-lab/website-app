@@ -3,14 +3,14 @@
 namespace App\Middlewares;
 
 use System\Components\Request;
+use System\Enums\AuthGuard;
 use System\Support\Facades\Auth;
 
-class GuestMiddleware
+class WebMiddleware
 {
     public function handle(Request $request, callable $next)
     {
-        if(Auth::user())
-            return redirect('/dashboard');
+        Auth::guard(AuthGuard::WEB);
 
         return $next($request);
     }
