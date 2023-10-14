@@ -20,6 +20,7 @@ class LoginRequest extends Request
         if(!Auth::attempt(['email' => $this->email], $this->password))
             return redirect()
                 ->back()
-                ->with('errors', ['email' => 'Invalid credential']);
+                ->withInput()
+                ->with('errors', ['login' => 'Email atau password salah']);
     }
 }

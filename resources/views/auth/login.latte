@@ -1,25 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form action="" method="post">
-        <div>
-            <label for="email">Email</label>
-            <input type="text" name="email" id="email">
-            <small>{error('email')}</small>
-        </div>
-        <div>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password">
-            <small>{error('password')}</small>
-        </div>
-        <div>
-            <button type="submit">Login</button>
-        </div>
-    </form>
-</body>
-</html>
+{layout '../layouts/auth.latte'}
+
+{block content}
+<div class="position-relative text-center my-4">
+    <p class="mb-0 fs-4 px-3 d-inline-block bg-white text-dark z-index-5 position-relative">Login Form</p>
+    <span class="border-top w-100 position-absolute top-50 start-50 translate-middle"></span>
+</div>
+
+{if error('login')}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <small>{error('login')}</small>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{/if}
+
+<form action="" method="post">
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control {error('email') ? 'is-invalid' : ''}" id="email" value="{old('email')}" name="email">
+        <div class="invalid-feedback">{error('email')}</div>
+    </div>
+    <div class="mb-4">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control {error('password') ? 'is-invalid' : ''}" id="password" name="password">
+        <div class="invalid-feedback">{error('password')}</div>
+    </div>
+    <div class="d-flex align-items-center justify-content-end mb-4">
+        <a class="text-primary fw-medium" href="/auth/forgot">
+            Forgot Password ?
+        </a>
+    </div>
+    <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Login</button>
+</form>
+{/block}

@@ -30,7 +30,7 @@ class View
         $errors = session()->pull('errors', []);
         $old = session()->pull('prev_input', []);
 
-        static::$latte->addFunction('error', fn(string $name) => isset($errors[$name]) ? $errors[$name] : false);
+        static::$latte->addFunction('error', fn(string $name) => isset($errors[$name]) ? ucfirst($errors[$name]) : false);
         static::$latte->addFunction('old', fn(string $name) => isset($old[$name]) ? $old[$name] : false);
 
         return static::$latte->renderToString("{$path}.latte", $params);
