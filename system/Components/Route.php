@@ -39,7 +39,9 @@ class Route
             static::$middlewares = array_merge(static::$middlewares, $middleware);
 
         $callback();
-        static::$middlewares = [];
+
+        $middleware = is_string($middleware) ? [$middleware] : $middleware;
+        static::$middlewares = array_diff(static::$middlewares, $middleware);
     }
 
     public static function prefix(string $prefix, callable $callback)
