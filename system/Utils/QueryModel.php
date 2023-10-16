@@ -3,6 +3,7 @@
 namespace System\Utils;
 
 use PDO;
+use System\Exceptions\QueryException;
 
 trait QueryModel
 {
@@ -12,7 +13,7 @@ trait QueryModel
         $stmt = $this->conn()->prepare($query);
 
         $stmt->execute(['id' => $value]);
-        return $stmt->fetchObject();
+        return $this->mapToModel($stmt->fetch());
     }
 
     public function get(array $params, bool $isSingle = false) {
@@ -23,28 +24,36 @@ trait QueryModel
         $stmt->execute($params);
 
         return $isSingle ?
-            $stmt->fetchObject() :
-            $stmt->fetchAll(PDO::FETCH_OBJ);
+            $this->mapToModel($stmt->fetch) :
+            (array_map(fn($result) => $this->mapToModel($result), $stmt->fetchAll()));
     }
 
-    public function update(array $clauses, array $values)
+    public function update(array $values, ?array $clauses = null)
     {
         $prefix = 'up_';
         $query = "UPDATE {$this->table} SET";
-
         $query .= $this->composeQuery($values, ',');
-        $query .= " WHERE " . $this->composeQuery($clauses, 'AND', $prefix);
 
-        $params = array_merge($values, keyprefix($prefix, $clauses));
+        $query .= is_null($clauses) ?
+            " WHERE {$this->primaryKey} = :id" :
+            " WHERE " . $this->composeQuery($clauses, 'AND', $prefix);
+
+        $params = is_null($clauses) ?
+            array_merge($values, ['id' => $this->{$this->primaryKey}]) :
+            array_merge($values, keyprefix($prefix, $clauses));
+
         $stmt = $this->conn()->prepare($query);
+        $stmt->execute($params);
 
-        return $stmt->execute($params);
+        return $stmt->rowCount();
     }
 
     public function all()
     {
         $stmt = $this->conn()->query("SELECT * FROM {$this->table}");
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        $results = $stmt->fetchAll();
+
+        return array_map(fn($result) => $this->mapToModel($result), $results);
     }
 
     public function insert(array $params)
@@ -52,15 +61,18 @@ trait QueryModel
         $stmt = $this->conn()->prepare($this->composeInsertQuery($params));
         $stmt->execute($params);
 
-        return $this->conn()->lastInsertId();
+        $params[$this->primaryKey] = $this->conn()->lastInsertId();
+        return $this->mapToModel($params);
     }
 
-    public function delete($id)
+    public function delete()
     {
+        if(!$this->_data) throw new QueryException("You must run query first");
+
         $query = "DELETE FROM {$this->table} WHERE {$this->primaryKey} = :id";
         $stmt = $this->conn()->prepare($query);
 
-        $stmt->execute(['id' => $id]);
+        $stmt->execute(['id' => $this->{$this->primaryKey}]);
         return $stmt->rowCount();
     }
 

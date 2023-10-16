@@ -2,9 +2,9 @@
 
 use Josantonius\Session\Session;
 use Latte\RuntimeException;
-use System\Utils\Config;
-use System\Utils\Redirect;
-use System\Utils\View;
+use System\Components\Config;
+use System\Components\View;
+use System\Components\Redirect;
 
 if(!function_exists('env')) {
     function env(string $name, string $fallback = null) {
@@ -40,6 +40,12 @@ if(!function_exists('session')) {
 if(!function_exists('redirect')) {
     function redirect(string $route = '') {
         return (new Redirect($route));
+    }
+}
+
+if(!function_exists('password')) {
+    function password(string $word): string {
+        return password_hash($word, PASSWORD_DEFAULT);
     }
 }
 

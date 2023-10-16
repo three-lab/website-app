@@ -3,11 +3,12 @@
 namespace System\Components;
 
 use PDO;
+use System\Utils\DataModel;
 use System\Utils\QueryModel;
 
 class Model
 {
-    use QueryModel;
+    use DataModel, QueryModel;
 
     protected string $table = '';
     protected string $primaryKey = 'id';

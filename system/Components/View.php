@@ -1,6 +1,6 @@
 <?php
 
-namespace System\Utils;
+namespace System\Components;
 
 use Latte\Engine;
 use Latte\Loaders\FileLoader;

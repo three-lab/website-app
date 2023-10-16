@@ -1,6 +1,6 @@
 <?php
 
-namespace System\Utils;
+namespace System\Components;
 
 class Config
 {

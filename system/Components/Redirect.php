@@ -1,6 +1,6 @@
 <?php
 
-namespace System\Utils;
+namespace System\Components;
 
 use Josantonius\Session\Facades\Session;
 use System\Components\Request;
