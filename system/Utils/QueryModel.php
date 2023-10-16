@@ -2,7 +2,6 @@
 
 namespace System\Utils;
 
-use PDO;
 use System\Exceptions\QueryException;
 
 trait QueryModel
@@ -24,7 +23,7 @@ trait QueryModel
         $stmt->execute($params);
 
         return $isSingle ?
-            $this->mapToModel($stmt->fetch) :
+            $this->mapToModel($stmt->fetch()) :
             (array_map(fn($result) => $this->mapToModel($result), $stmt->fetchAll()));
     }
 
