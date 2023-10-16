@@ -30,7 +30,7 @@ class Model
         static::$_connection = $pdo;
     }
 
-    protected function conn(): PDO
+    public function conn(): PDO
     {
         return static::$_connection;
     }

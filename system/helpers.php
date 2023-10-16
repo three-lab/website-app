@@ -43,6 +43,17 @@ if(!function_exists('redirect')) {
     }
 }
 
+if(!function_exists('keyprefix')) {
+    function keyprefix(string $prefix, array $array) {
+        foreach($array as $k=>$v){
+            $array[$prefix.$k] = $v;
+            unset($array[$k]);
+        }
+
+        return $array;
+    }
+}
+
 if(!function_exists('abort')) {
     function abort($code) {
         http_response_code($code);

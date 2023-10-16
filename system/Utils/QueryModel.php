@@ -15,11 +15,30 @@ trait QueryModel
         return $stmt->fetchObject();
     }
 
-    public function get(array $params) {
-        $stmt = $this->conn()->prepare($this->composeQuery($params, "AND"));
+    public function get(array $params, bool $isSingle = false) {
+        $query = "SELECT * FROM {$this->table} WHERE";
+        $query .= $this->composeQuery($params, "AND");
+
+        $stmt = $this->conn()->prepare($query);
         $stmt->execute($params);
 
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        return $isSingle ?
+            $stmt->fetchObject() :
+            $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function update(array $clauses, array $values)
+    {
+        $prefix = 'up_';
+        $query = "UPDATE {$this->table} SET";
+
+        $query .= $this->composeQuery($values, ',');
+        $query .= " WHERE " . $this->composeQuery($clauses, 'AND', $prefix);
+
+        $params = array_merge($values, keyprefix($prefix, $clauses));
+        $stmt = $this->conn()->prepare($query);
+
+        return $stmt->execute($params);
     }
 
     public function all()
@@ -36,13 +55,22 @@ trait QueryModel
         return $this->conn()->lastInsertId();
     }
 
-    private function composeQuery(array $params, string $operator)
+    public function delete($id)
     {
-        $query = "SELECT * FROM {$this->table} WHERE ";
+        $query = "DELETE FROM {$this->table} WHERE {$this->primaryKey} = :id";
+        $stmt = $this->conn()->prepare($query);
+
+        $stmt->execute(['id' => $id]);
+        return $stmt->rowCount();
+    }
+
+    private function composeQuery(array $params, string $operator, string $prefix = '')
+    {
+        $query = " ";
         $conditions = [];
 
         foreach($params as $key => $value)
-            $conditions[] = "`{$key}` = :{$key}";
+            $conditions[] = "`{$key}` = :{$prefix}{$key}";
 
         $query .= implode(" $operator ", $conditions);
         return $query;

@@ -14,5 +14,6 @@ class LoginController
     public function login(LoginRequest $request)
     {
         $request->authenticate();
+        return redirect('/dashboard');
     }
 }

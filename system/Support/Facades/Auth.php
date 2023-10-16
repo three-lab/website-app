@@ -31,4 +31,14 @@ class Auth
     {
         return self::getInstance()->guard($guard);
     }
+
+    public static function sendVerify(object $user)
+    {
+        return self::getInstance()->sendVerify($user);
+    }
+
+    public static function attemptCode(object $user, string $code)
+    {
+        return self::getInstance()->attemptCode($user, $code);
+    }
 }

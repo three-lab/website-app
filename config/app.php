@@ -6,4 +6,7 @@ return [
 
     'jwt_secret' => env('JWT_SECRET', ''),
     'jwt_algo' => env('JWT_ALGO', 'HS256'),
+
+    // Varification code expiration in minutes
+    'verify_expiration' => 60,
 ];

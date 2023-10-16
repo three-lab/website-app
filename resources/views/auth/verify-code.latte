@@ -1,0 +1,61 @@
+{layout '../layouts/auth.latte'}
+
+{block content}
+<style>
+    .form-control {
+        padding: 10px 10px;
+    }
+
+    input[type='number'] {
+        -moz-appearance:textfield;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+</style>
+
+<div class="mb-5 text-center">
+    <p>Kami telah mengirimkan kode verifikasi ke email yang terhubung ke akun anda.</p>
+    <h6 class="fw-bolder">*******{hide_email($user->email)}</h6>
+</div>
+<form action="" method="post">
+    {if error('code')}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <small>{error('code')}</small>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {/if}
+
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label fw-semibold">Type your 6 digits security code</label>
+        <div class="d-flex align-items-center gap-2 gap-sm-3">
+            <input type="number" data-num="0" class="form-control" name="code[]" placeholder="" autofocus>
+            <input type="number" data-num="1" class="form-control" name="code[]" placeholder="">
+            <input type="number" data-num="2" class="form-control" name="code[]" placeholder="">
+            <input type="number" data-num="3" class="form-control" name="code[]" placeholder="">
+            <input type="number" data-num="4" class="form-control" name="code[]" placeholder="">
+            <input type="number" data-num="5" class="form-control" name="code[]" placeholder="">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100 py-8 mb-4">Verifikasi</button>
+</form>
+{/block}
+
+{block script}
+<script n:syntax="double">
+    $('.form-control').keyup(function(e) {
+        const num = $(this).data('num');
+
+        if(this.value.length > 1)
+            $(this).val(this.value.charAt(0));
+
+        $(`input[data-num=${num+1}]`).focus();
+    });
+
+    $('#resend-code').click(function(e) {
+        $('#resend-code-form').submit();
+    });
+</script>
+{/block}
