@@ -2,6 +2,8 @@
 
 namespace System\Utils;
 
+use Cake\Chronos\Chronos;
+
 trait DataModel
 {
     private ?array $_data = null;
@@ -19,7 +21,21 @@ trait DataModel
 
     public function __get($name)
     {
-        return array_key_exists($name, $this->_data) ?
-            $this->_data[$name] : null;
+        if(!array_key_exists($name, $this->_data)) return null;
+
+        if(array_key_exists($name, $this->casts))
+            return $this->castConverter($this->_data[$name], $this->casts[$name]);
+
+        return $this->_data[$name];
+    }
+
+    private function castConverter($value, $type)
+    {
+        return match($type) {
+            'datetime' => Chronos::createFromFormat('Y-m-d H:i:s', $value),
+            'date' => Chronos::createFromFormat('Y-m-d', $value),
+            'array' => json_decode($value, true),
+            'object' => json_decode($value),
+        };
     }
 }

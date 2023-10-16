@@ -12,6 +12,7 @@ class Model
 
     protected string $table = '';
     protected string $primaryKey = 'id';
+    protected array $casts = [];
 
     private static PDO $_connection;
 
