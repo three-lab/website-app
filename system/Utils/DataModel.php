@@ -8,8 +8,10 @@ trait DataModel
 {
     private ?array $_data = null;
 
-    protected function mapToModel(array $data)
+    protected function mapToModel(array|bool $data)
     {
+        if(!$data) return null;
+
         $this->_data = $data;
         return $this;
     }
