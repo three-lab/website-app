@@ -48,7 +48,7 @@ class Route
     {
         static::$prefix .= $prefix;
         $callback();
-        static::$prefix = '';
+        static::$prefix = str_replace($prefix, '', static::$prefix);
     }
 
     public static function getRoutes(): array
