@@ -94,6 +94,11 @@ class Authentication
             ];
         }
 
+        $this->verifyModel->deleteAll([
+            'model' => $user::class,
+            'user_id' => $user->id,
+        ]);
+
         return (object) ['status' => true];
     }
 }

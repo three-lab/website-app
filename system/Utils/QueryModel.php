@@ -75,6 +75,15 @@ trait QueryModel
         return $stmt->rowCount();
     }
 
+    public function deleteAll(array $clauses)
+    {
+        $query = "DELETE FROM {$this->table} WHERE" . $this->composeQuery($clauses, "AND");
+        $stmt = $this->conn()->prepare($query);
+
+        $stmt->execute($clauses);
+        return $stmt->rowCount();
+    }
+
     private function composeQuery(array $params, string $operator, string $prefix = '')
     {
         $query = " ";

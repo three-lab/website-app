@@ -2,12 +2,13 @@
 
 namespace App\Controllers\Auth;
 
+use App\Models\User;
 use System\Components\Request;
 use System\Support\Facades\Auth;
 
 class VerificationController
 {
-    private object $user;
+    private User $user;
 
     public function __construct()
     {
