@@ -6,17 +6,17 @@ use App\Models\User;
 use App\Models\Verification;
 use Cake\Chronos\Chronos;
 use Firebase\JWT\JWT;
+use System\Components\Model;
 use System\Enums\AuthGuard;
 
 class Authentication
 {
-    private User $userModel;
+    private Model $model;
     private Verification $verifyModel;
     private ?AuthGuard $guard;
 
     public function __construct()
     {
-        $this->userModel = new User;
         $this->verifyModel = new Verification;
         $this->guard = null;
     }
@@ -27,13 +27,19 @@ class Authentication
         return $this;
     }
 
-    public function user(): object|null
+    public function model(string $model)
+    {
+        $this->model = new $model;
+        return $this;
+    }
+
+    public function user(): ?User
     {
         if($this->guard == AuthGuard::WEB)
             return session()->get('user');
     }
 
-    public function sendVerify(object $user)
+    public function sendVerify(Model $user): bool
     {
         $code = random_int(100000, 999999);
         $expiration = Chronos::now();
@@ -51,8 +57,7 @@ class Authentication
 
     public function attempt(array $columns, string $password): bool|string
     {
-        $user = $this->userModel->get($columns);
-        $user = $user[0] ?? false;
+        $user = $this->model->get($columns, true);
 
         if(!$user) return false;
         if(!password_verify($password, $user->password)) return false;
@@ -68,7 +73,7 @@ class Authentication
         ], config('app.jwt_secret'), config('app.jwt_algo'));
     }
 
-    public function attemptCode(object $user, string $code): object
+    public function attemptCode(Model $user, string $code): object
     {
         $verify = $this->verifyModel->get([
             'user_id' => $user->id,

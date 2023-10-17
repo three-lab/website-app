@@ -2,43 +2,20 @@
 
 namespace System\Support\Facades;
 
-use System\Enums\AuthGuard;
 use System\Support\Authentication;
 
-class Auth
+/**
+ * @method static \System\Support\Authentication guard(\System\Enums\AuthGuard $guard)
+ * @method static \System\Support\Authentication model(\System\Components\Model $model)
+ * @method static \System\Components\Model user()
+ * @method static bool sendVerify(\System\Components\Model $model)
+ * @method static bool|string attempt(array $columns, string $password)
+ * @method static object attemptCode(\System\Components\Model $model, string $code)
+ */
+class Auth extends Facade
 {
-    private static ?Authentication $auth = null;
-
-    private static function getInstance()
+    protected static function getFacadeAccessor()
     {
-        if(!self::$auth)
-            self::$auth = new Authentication();
-
-        return self::$auth;
-    }
-
-    public static function attempt(array $columns, string $password): bool|string
-    {
-        return self::getInstance()->attempt($columns, $password);
-    }
-
-    public static function user(): object|null
-    {
-        return self::getInstance()->user();
-    }
-
-    public static function guard(AuthGuard $guard): Authentication
-    {
-        return self::getInstance()->guard($guard);
-    }
-
-    public static function sendVerify(object $user)
-    {
-        return self::getInstance()->sendVerify($user);
-    }
-
-    public static function attemptCode(object $user, string $code)
-    {
-        return self::getInstance()->attemptCode($user, $code);
+        return Authentication::class;
     }
 }
