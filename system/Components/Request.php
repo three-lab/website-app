@@ -15,7 +15,9 @@ class Request
 
     public function __construct()
     {
-        $this->_data = $_REQUEST;
+        $inputStream = @json_decode(file_get_contents('php://input'), true);
+
+        $this->_data = $inputStream ? $inputStream : $_REQUEST;
         $this->valFactory = new Factory;
 
         $this->validate();
