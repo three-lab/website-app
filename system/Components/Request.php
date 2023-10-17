@@ -11,6 +11,7 @@ class Request
     use RequestData;
 
     private array $_data, $_validatedData;
+    private array $_headers = [];
     private Factory $valFactory;
 
     public function __construct()
@@ -20,7 +21,14 @@ class Request
         $this->_data = $inputStream ? $inputStream : $_REQUEST;
         $this->valFactory = new Factory;
 
+        $this->parseHeaders();
         $this->validate();
+    }
+
+    public function header(string $name)
+    {
+        return array_key_exists($name, $this->_headers) ?
+            $this->_headers[$name] : null;
     }
 
     public function validate(array|null $rules = null)
@@ -54,5 +62,15 @@ class Request
             ->back()
             ->withInput()
             ->with('errors', $errors->firstOfAll());
+    }
+
+    private function parseHeaders()
+    {
+        foreach($_SERVER as $key => $value) {
+            if(strpos($key, 'HTTP_') === 0) {
+                $headerKey = substr($key, 5);
+                $this->_headers[strtolower($headerKey)] = $value;
+            }
+        }
     }
 }

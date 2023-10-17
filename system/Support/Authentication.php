@@ -5,6 +5,8 @@ namespace System\Support;
 use App\Models\Verification;
 use Cake\Chronos\Chronos;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+use Firebase\JWT\SignatureInvalidException;
 use System\Components\Model;
 use System\Enums\AuthGuard;
 
@@ -36,6 +38,22 @@ class Authentication
     {
         if($this->guard == AuthGuard::WEB)
             return session()->get('user');
+
+        if($this->guard == AuthGuard::API) {
+            $token = request()->header('authorization');
+            $key = new Key(config('app.jwt_secret'), config('app.jwt_algo'));
+
+            try {
+                $jwt = JWT::decode($token, $key);
+                if(time() > $jwt->expiration) return null;
+
+                return $this->model->find($jwt->id);
+            } catch(SignatureInvalidException $e) {
+                return null;
+            }
+        }
+
+        return null;
     }
 
     public function attempt(array $columns, string $password): bool|string
@@ -53,6 +71,7 @@ class Authentication
         return JWT::encode([
             'id' => $user->id,
             'model' => $user::class,
+            'expiration' => Chronos::now()->addHours(5)->timestamp,
         ], config('app.jwt_secret'), config('app.jwt_algo'));
     }
 

@@ -5,6 +5,7 @@ use Latte\RuntimeException;
 use System\Components\Config;
 use System\Components\View;
 use System\Components\Redirect;
+use System\Components\Request;
 use System\Components\Response;
 
 if(!function_exists('env')) {
@@ -41,6 +42,12 @@ if(!function_exists('session')) {
 if(!function_exists('redirect')) {
     function redirect(string $route = '') {
         return (new Redirect($route));
+    }
+}
+
+if(!function_exists('request')) {
+    function request() {
+        return new Request;
     }
 }
 
