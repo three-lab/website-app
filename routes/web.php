@@ -18,7 +18,8 @@ Route::prefix('/auth', function() {
         Route::get('/verify-code', [VerificationController::class, 'show']);
         Route::post('/verify-code', [VerificationController::class, 'verifyCode']);
 
-        Route::post('/reset-password', [ResetPasswordController::class, 'show']);
+        Route::get('/reset-password', [ResetPasswordController::class, 'show']);
+        Route::post('/reset-password', [ResetPasswordController::class, 'reset']);
     });
 });
 

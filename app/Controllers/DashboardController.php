@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use System\Support\Facades\Auth;
-
 class DashboardController
 {
     public function index()

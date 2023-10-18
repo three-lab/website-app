@@ -2,20 +2,32 @@
 
 namespace App\Controllers\Auth;
 
-use System\Components\Request;
-use System\Support\Facades\Auth;
+use App\Models\User;
+use App\Requests\Auth\ResetPasswordRequest;
 
 class ResetPasswordController
 {
-    public function show(Request $request)
+    private ?User $user;
+
+    public function __construct()
     {
-        $request->validate([
-            'code' => 'required|array',
-        ]);
+        $this->user = session()->get('reset_user');
+        if(!$this->user) return redirect('/auth/login');
+    }
 
-        $code = implode($request->code);
-        $user = session()->get('reset_user');
+    public function show()
+    {
+        return view('auth.reset-password');
+    }
 
-        Auth::attemptCode($user, $code);
+    public function reset(ResetPasswordRequest $request)
+    {
+        $password = password($request->password);
+        $this->user->update(compact('password'));
+
+        session()->remove('reset_user');
+
+        return redirect('/auth/login')
+            ->with('message', 'Berhasil mereset password');
     }
 }

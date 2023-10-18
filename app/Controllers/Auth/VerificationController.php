@@ -37,5 +37,7 @@ class VerificationController
 
         if(!$verify->status)
             return redirect()->back()->with('errors', ['code' => $verify->message]);
+
+        return redirect('/auth/reset-password');
     }
 }
