@@ -2,6 +2,7 @@
 
 namespace System\Utils;
 
+use PDO;
 use System\Exceptions\QueryException;
 
 trait QueryModel
@@ -12,7 +13,7 @@ trait QueryModel
         $stmt = $this->conn()->prepare($query);
 
         $stmt->execute(['id' => $value]);
-        return $this->mapToModel($stmt->fetch());
+        return $this->mapToModel($stmt->fetch(PDO::FETCH_ASSOC));
     }
 
     public function get(array $params, bool $isSingle = false) {
@@ -23,8 +24,8 @@ trait QueryModel
         $stmt->execute($params);
 
         return $isSingle ?
-            $this->mapToModel($stmt->fetch()) :
-            (array_map(fn($result) => $this->mapToModel($result), $stmt->fetchAll()));
+            $this->mapToModel($stmt->fetch(PDO::FETCH_ASSOC)) :
+            (array_map(fn($result) => $this->mapToModel($result), $stmt->fetchAll(PDO::FETCH_ASSOC)));
     }
 
     public function update(array $values, ?array $clauses = null)

@@ -43,6 +43,8 @@ class Authentication
             $token = request()->header('authorization');
             $key = new Key(config('app.jwt_secret'), config('app.jwt_algo'));
 
+            if(!$token) return null;
+
             try {
                 $jwt = JWT::decode($token, $key);
                 if(time() > $jwt->expiration) return null;

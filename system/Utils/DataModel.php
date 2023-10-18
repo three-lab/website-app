@@ -8,14 +8,6 @@ trait DataModel
 {
     private ?array $_data = null;
 
-    protected function mapToModel(array|bool $data)
-    {
-        if(!$data) return null;
-
-        $this->_data = $data;
-        return $this;
-    }
-
     public function __set($name, $value)
     {
         return $this->_data[$name] = $value;
@@ -29,6 +21,19 @@ trait DataModel
             return $this->castConverter($this->_data[$name], $this->casts[$name]);
 
         return $this->_data[$name];
+    }
+
+    public function toArray(): ?array
+    {
+        return $this->_data;
+    }
+
+    protected function mapToModel(array|bool $data)
+    {
+        if(!$data) return null;
+
+        $this->_data = $data;
+        return $this;
     }
 
     private function castConverter($value, $type)

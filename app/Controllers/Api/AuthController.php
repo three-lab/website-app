@@ -19,4 +19,10 @@ class AuthController
 
         return $this->success(['token' => $attempt], 'Berhasil login');
     }
+
+    public function user()
+    {
+        $user = Auth::user()->toArray();
+        return $this->success(compact('user'));
+    }
 }

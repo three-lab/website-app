@@ -2,8 +2,8 @@
 
 namespace System\Enums;
 
-enum AuthGuard
+enum AuthGuard: string
 {
-    case WEB;
-    case API;
+    case WEB = 'web';
+    case API = 'api';
 }
