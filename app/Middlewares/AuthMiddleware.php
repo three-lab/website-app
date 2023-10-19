@@ -18,7 +18,7 @@ class AuthMiddleware
         if(Auth::user()) return $next($request);
 
         if($guard == AuthGuard::WEB)
-            return redirect('/login');
+            return redirect('/auth/login');
 
         if($guard == AuthGuard::API)
             return $this->error([], 'Unauthorized', 401);

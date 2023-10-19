@@ -23,4 +23,6 @@ Route::prefix('/auth', function() {
     });
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::middleware('auth:web', function() {
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+});

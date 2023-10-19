@@ -6,6 +6,6 @@ class DashboardController
 {
     public function index()
     {
-        return "<h1>Dashboard</h1>";
+        return view('panel.dashboard');
     }
 }

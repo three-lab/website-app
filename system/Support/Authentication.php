@@ -93,7 +93,7 @@ class Authentication
             ->send($user->email, 'Verification Code', view('mail.verify', compact('code')));
     }
 
-    public function attemptCode(Model $user, string $code): object
+    public function attemptCode(Model $user, string $code, bool $onlyAttempt = false): object
     {
         $verify = $this->verifyModel->get([
             'model' => $user::class,
@@ -115,10 +115,11 @@ class Authentication
             ];
         }
 
-        $this->verifyModel->deleteAll([
-            'model' => $user::class,
-            'user_id' => $user->id,
-        ]);
+        if(!$onlyAttempt)
+            $this->verifyModel->deleteAll([
+                'model' => $user::class,
+                'user_id' => $user->id,
+            ]);
 
         return (object) ['status' => true];
     }

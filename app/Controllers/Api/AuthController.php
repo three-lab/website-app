@@ -5,6 +5,7 @@ namespace App\Controllers\Api;
 use App\Models\Employee;
 use App\Requests\Api\Auth\ForgotPasswordRequest;
 use App\Requests\Api\Auth\LoginRequest;
+use App\Requests\Api\Auth\ResetPasswordRequest;
 use App\Requests\Api\Auth\VerifyCodeRequest;
 use App\Traits\ApiResponser;
 use System\Support\Facades\Auth;
@@ -39,12 +40,27 @@ class AuthController
         $user = (new Employee)->get(['username' => $request->username], true);
         if(!$user) return $this->error([], 'Username tidak ditemukan');
 
-        $verify = Auth::attemptCode($user, $request->code);
+        $verify = Auth::attemptCode($user, $request->code, true);
 
         if(!$verify->status)
             return $this->error([], $verify->message);
 
         return $this->success([], 'Berhasil memverifikasi kode');
+    }
+
+    public function resetPass(ResetPasswordRequest $request)
+    {
+        $user = (new Employee)->get(['username' => $request->username], true);
+        if(!$user) return $this->error([], 'Username tidak ditemukan');
+
+        $verify = Auth::attemptCode($user, $request->code);
+        $password = password($request->password);
+
+        if(!$verify->status)
+            return $this->error([], $verify->message);
+
+        $user->update(compact('password'));
+        return $this->success([], 'Berhasil mereset password');
     }
 
     public function user()
