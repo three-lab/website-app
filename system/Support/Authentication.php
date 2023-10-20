@@ -9,6 +9,7 @@ use Firebase\JWT\Key;
 use Firebase\JWT\SignatureInvalidException;
 use System\Components\Model;
 use System\Enums\AuthGuard;
+use Throwable;
 
 class Authentication
 {
@@ -50,7 +51,7 @@ class Authentication
                 if(time() > $jwt->expiration) return null;
 
                 return $this->model->find($jwt->id);
-            } catch(SignatureInvalidException $e) {
+            } catch(Throwable $e) {
                 return null;
             }
         }
