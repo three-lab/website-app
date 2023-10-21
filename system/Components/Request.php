@@ -17,9 +17,13 @@ class Request
     public function __construct()
     {
         $inputStream = @json_decode(file_get_contents('php://input'), true);
+        $language = config('app.lang');
 
         $this->_data = $inputStream ? $inputStream : $_REQUEST;
         $this->valFactory = new Factory;
+
+        // Set validation language
+        $this->valFactory->messages()->add($language, __('validation'));
 
         $this->parseHeaders();
         $this->validate();
@@ -37,6 +41,7 @@ class Request
 
         $rules = (is_null($rules)) ? $this->rules() : $rules;
         $validation = $this->valFactory->validate($this->all(), $rules);
+        $validation->setLanguage(config('app.lang'))->validate();
 
         if(!$validation->fails()) {
             $this->_validatedData = $validation->getValidatedData();

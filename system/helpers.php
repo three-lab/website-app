@@ -3,6 +3,7 @@
 use Josantonius\Session\Session;
 use Latte\RuntimeException;
 use System\Components\Config;
+use System\Components\Language;
 use System\Components\View;
 use System\Components\Redirect;
 use System\Components\Request;
@@ -11,6 +12,13 @@ use System\Components\Response;
 if(!function_exists('env')) {
     function env(string $name, string $fallback = null) {
         return $_ENV[$name] ?? $fallback;
+    }
+}
+
+if(!function_exists('__')) {
+    function __(string $name) {
+        $lang = explode('.', trim($name));
+        return Language::getLanguage($lang[0], $lang[1] ?? null);
     }
 }
 
