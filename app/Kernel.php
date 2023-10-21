@@ -17,12 +17,12 @@ class Kernel
     {
         // Web routes
         Route::middleware('web', function() {
-            Route::prefix('', fn() => require '../routes/web.php');
+            Route::prefix('', fn() => require base_path('routes/web.php'));
         });
 
         // API routes
         Route::middleware('api', function() {
-            Route::prefix('/api', fn() => require '../routes/api.php');
+            Route::prefix('/api', fn() => require base_path('routes/api.php'));
         });
     }
 }

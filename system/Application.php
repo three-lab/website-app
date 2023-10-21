@@ -3,6 +3,8 @@
 namespace System;
 
 use App\Kernel;
+use Dotenv\Dotenv;
+use Dotenv\Exception\InvalidPathException;
 use Josantonius\Session\Facades\Session;
 use ReflectionMethod;
 use System\Components\Model;
@@ -19,11 +21,30 @@ class Application
         private array $routes
     ) {
         Model::boot();
-        Session::start(config('session'));
+
+        if(!Session::isStarted())
+            Session::start(config('session'));
     }
 
     public static function register()
     {
+        $envFile = (getenv('APP_ENV') == 'testing') ? '.env.testing' : '.env';
+
+        // Load dotenv configurations
+        try {
+            $env = Dotenv::createImmutable(__DIR__ . '/..', $envFile);
+            $env->load();
+        } catch(InvalidPathException $e) {}
+
+        $debugMode = filter_var(env('APP_DEBUG'), FILTER_VALIDATE_BOOL);
+
+        // Initialize pretty error page
+        if($debugMode) {
+            $whoops = new \Whoops\Run;
+            $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+            $whoops->register();
+        }
+
         $kernel = new Kernel;
         $kernel->routes();
 
@@ -35,9 +56,11 @@ class Application
 
     public function run()
     {
-        $route = $this->handleRoute();
+        if(php_sapi_name() == 'cli') return;
 
-        if(!$route) return abort(404);
+        if(!$route = $this->handleRoute())
+            return abort(404);
+
         if(is_null($route['middlewares'])) {
             $this->generateResponse($route);
             return;
@@ -55,7 +78,7 @@ class Application
     private function handleRoute(): array|bool
     {
         $path = $_SERVER['PATH_INFO'] ?? '/';
-        $method = $_SERVER['REQUEST_METHOD'];
+        $method = $_SERVER['REQUEST_METHOD'] ?? null;
 
         foreach($this->routes as $route) {
             $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $route['path']);
