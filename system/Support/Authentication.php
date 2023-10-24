@@ -124,4 +124,9 @@ class Authentication
 
         return (object) ['status' => true];
     }
+
+    public function logout()
+    {
+        session()->remove('user');
+    }
 }

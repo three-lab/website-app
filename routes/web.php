@@ -21,6 +21,8 @@ Route::prefix('/auth', function() {
         Route::get('/reset-password', [ResetPasswordController::class, 'show']);
         Route::post('/reset-password', [ResetPasswordController::class, 'reset']);
     });
+
+    Route::get('/logout', [LoginController::class, 'logout']);
 });
 
 Route::middleware('auth:web', function() {

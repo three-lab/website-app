@@ -11,6 +11,7 @@ use System\Support\Authentication;
  * @method static bool sendVerify(\System\Components\Model $user)
  * @method static bool|string attempt(array $columns, string $password)
  * @method static object attemptCode(\System\Components\Model $user, string $code, bool $onlyAttempt = false)
+ * @method static void logout()
  */
 class Auth extends Facade
 {

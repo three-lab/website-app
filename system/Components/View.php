@@ -4,6 +4,7 @@ namespace System\Components;
 
 use Latte\Engine;
 use Latte\Loaders\FileLoader;
+use System\Support\Facades\Auth;
 
 class View
 {
@@ -32,6 +33,7 @@ class View
 
         static::$latte->addFunction('error', fn(string $name) => isset($errors[$name]) ? ucfirst($errors[$name]) : false);
         static::$latte->addFunction('old', fn(string $name) => isset($old[$name]) ? $old[$name] : false);
+        static::$latte->addFunction('user', fn() => Auth::user());
 
         return static::$latte->renderToString("{$path}.latte", $params);
     }

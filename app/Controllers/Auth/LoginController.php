@@ -3,6 +3,7 @@
 namespace App\Controllers\Auth;
 
 use App\Requests\Auth\LoginRequest;
+use System\Support\Facades\Auth;
 
 class LoginController
 {
@@ -15,5 +16,11 @@ class LoginController
     {
         $request->authenticate();
         return redirect('/dashboard');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/auth/login');
     }
 }
