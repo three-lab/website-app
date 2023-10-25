@@ -4,13 +4,14 @@ namespace System\Components;
 
 use Somnambulist\Components\Validation\ErrorBag;
 use Somnambulist\Components\Validation\Factory;
+use System\Support\UploadedFile;
 use System\Utils\RequestData;
 
 class Request
 {
     use RequestData;
 
-    private array $_data, $_validatedData;
+    private array $_data, $_validatedData, $_files;
     private array $_headers = [];
     private Factory $valFactory;
 
@@ -21,6 +22,7 @@ class Request
 
         $this->_data = $inputStream ? $inputStream : $_REQUEST;
         $this->valFactory = new Factory;
+        $this->_files = $this->parseFiles();
 
         // Set validation language
         $this->valFactory->messages()->add($language, __('validation'));
@@ -77,5 +79,36 @@ class Request
                 $this->_headers[strtolower($headerKey)] = $value;
             }
         }
+    }
+
+    /**
+     * Parse all uploaded files
+     * @return array<UploadedFile>
+     */
+    private function parseFiles()
+    {
+        $files = [];
+
+        foreach($_FILES as $name => $value) {
+            $fileName = $value['name'];
+
+            if(is_string($fileName)) {
+                $files[$name] = new UploadedFile($value);
+                continue;
+            }
+
+            foreach($fileName as $index => $val) {
+                $files[$name][$index] = new UploadedFile([
+                    'name' => $fileName[$index],
+                    'full_path' => $value['full_path'][$index],
+                    'type' => $value['type'][$index],
+                    'tmp_name' => $value['tmp_name'][$index],
+                    'error' => $value['error'][$index],
+                    'size' => $value['size'][$index],
+                ]);
+            }
+        }
+
+        return $files;
     }
 }

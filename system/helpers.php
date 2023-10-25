@@ -35,6 +35,12 @@ if(!function_exists('base_path')) {
     }
 }
 
+if(!function_exists('public_path')) {
+    function public_path(string $path = '') {
+        return base_path("public/{$path}");
+    }
+}
+
 if(!function_exists('view')) {
     function view(string $view, array $params = []) {
         return View::render($view, $params);

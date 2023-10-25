@@ -2,6 +2,8 @@
 
 namespace System\Utils;
 
+use System\Support\UploadedFile;
+
 trait RequestData
 {
     public function __set($name, $value)
@@ -15,8 +17,17 @@ trait RequestData
             $this->_data[$name] : null;
     }
 
+    public function file(string $name): UploadedFile|array|null
+    {
+        return array_key_exists($name, $this->_files) ?
+            $this->_files[$name] : null;
+    }
+
     public function all()
     {
-        return $this->_data;
+        return array_merge(
+            $this->_data,
+            $this->_files
+        );
     }
 }
