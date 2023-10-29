@@ -2,6 +2,8 @@
 
 namespace System\Support;
 
+use System\Support\Facades\FileSystem;
+
 class UploadedFile
 {
     public function __construct(
@@ -22,6 +24,8 @@ class UploadedFile
 
     public function store(string $path, ?string $name = null)
     {
+        FileSystem::makeDirectory($path);
+
         return move_uploaded_file(
             $this->file['tmp_name'],
             $path . '/' . ($name ?? $this->file['name'])
