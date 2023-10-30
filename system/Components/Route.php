@@ -30,6 +30,39 @@ class Route
         ];
     }
 
+    public static function put(string $path, array $action)
+    {
+        static::$routes[] = [
+            'path' => static::$prefix . $path,
+            'type' => 'PUT',
+            'controller' => $action[0],
+            'method' => $action[1],
+            'middlewares' => static::$middlewares,
+        ];
+    }
+
+    public static function patch(string $path, array $action)
+    {
+        static::$routes[] = [
+            'path' => static::$prefix . $path,
+            'type' => 'PATCH',
+            'controller' => $action[0],
+            'method' => $action[1],
+            'middlewares' => static::$middlewares,
+        ];
+    }
+
+    public static function delete(string $path, array $action)
+    {
+        static::$routes[] = [
+            'path' => static::$prefix . $path,
+            'type' => 'DELETE',
+            'controller' => $action[0],
+            'method' => $action[1],
+            'middlewares' => static::$middlewares,
+        ];
+    }
+
     public static function middleware(string|array $middleware, callable $callback)
     {
         if(is_string($middleware))

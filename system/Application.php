@@ -78,7 +78,7 @@ class Application
     private function handleRoute(): array|bool
     {
         $path = $_SERVER['PATH_INFO'] ?? '/';
-        $method = $_SERVER['REQUEST_METHOD'] ?? null;
+        $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'] ?? null;
 
         foreach($this->routes as $route) {
             $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $route['path']);
