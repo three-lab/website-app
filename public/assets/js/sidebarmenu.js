@@ -21,5 +21,15 @@ $(function () {
         e.preventDefault();
     });
 
-    console.log(path);
+    $('.sidebar-link').each((i, link) => {
+        link = $(link);
+
+        const activeState = link.data('active');
+        const regexPattern = activeState == undefined ? '' : activeState.replace(/\*/g, '.*');
+        const regex = new RegExp('^' + regexPattern + '$');
+
+        if (regex.test(path)) {
+            link.addClass('active');
+        }
+    });
 });

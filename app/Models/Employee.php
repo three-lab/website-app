@@ -9,6 +9,7 @@ class Employee extends Model
     protected string $table = 'employees';
 
     protected array $casts = [
+        'birthdate' => 'date',
         'photos' => 'array',
     ];
 }

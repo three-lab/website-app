@@ -1,0 +1,11 @@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+{if session()->has('swals')}
+    Swal.fire({
+        icon: 'success',
+        text: {session()->pull('swals')},
+        timer: 1500,
+    });
+{/if}
+</script>

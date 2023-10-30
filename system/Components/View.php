@@ -32,7 +32,7 @@ class View
         $old = session()->pull('prev_input', []);
 
         static::$latte->addFunction('error', fn(string $name) => isset($errors[$name]) ? ucfirst($errors[$name]) : false);
-        static::$latte->addFunction('old', fn(string $name) => isset($old[$name]) ? $old[$name] : false);
+        static::$latte->addFunction('old', fn(string $name) => isset($old[$name]) ? $old[$name] : null);
         static::$latte->addFunction('user', fn() => Auth::user());
 
         return static::$latte->renderToString("{$path}.latte", $params);

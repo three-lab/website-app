@@ -32,8 +32,12 @@ trait DataModel
     {
         if(!$data) return null;
 
-        $this->_data = $data;
-        return $this;
+        $model = new $this;
+
+        foreach($data as $key => $value)
+            $model->{$key} = $value;
+
+        return $model;
     }
 
     private function castConverter($value, $type)

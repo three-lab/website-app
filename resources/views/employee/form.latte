@@ -1,0 +1,93 @@
+{php $employee = $employee ?? null}
+
+
+<div class="col-md-8">
+    <div class="card">
+        <div class="card-header d-flex align-items-center">
+            <span class="bg-light-primary px-2 py-1 rounded-pill me-2"><i class="ti ti-file-text"></i></span>
+            <h5 class="mt-2">Biodata Pegawai</h5>
+        </div>
+        <div class="card-body row">
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <label for="fullname">Nama Lengkap</label>
+                    <input type="text" class="form-control" name="fullname" value="{old('fullname') ?? $employee?->fullname}" autofocus>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="nik">NIK</label>
+                    <input type="number" name="nik" id="nik" class="form-control" value="{old('nik') ?? $employee?->nik}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="birthdate">Tanggal Lahir</label>
+                    <input type="date" class="form-control" name="birthdate" value="{old('birthdate') ?? $employee?->birthdate->format('Y-m-d')}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="gender">Jenis Kelamin</label>
+                    <select name="gender" id="gender" class="form-control">
+                        <option value="male">Pria</option>
+                        <option value="female">Wanita</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" value="{old('email') ?? $employee?->email}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" class="form-control" value="{old('username') ?? $employee?->username}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" {$employee?->password ? 'disabled'}>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-8">
+    <div class="card">
+        <div class="card-header d-flex align-items-center">
+            <span class="bg-light-primary px-2 py-1 rounded-pill me-2"><i class="ti ti-user-square-rounded"></i></span>
+            <h5 class="mt-2">Foto Pegawai</h5>
+        </div>
+        <div class="card-body row justify-content-center">
+            <div class="col-md-4 mb-4">
+                <input class="d-none" type="file" name="images[front]" id="image-front">
+                <div class="photo-preview square-ratio rounded" data-target="#image-front" style="background-image: url(/images/employees/{$employee->id}/{$employee->photos['front']})">
+                    <i class="ti ti-user-scan fs-8"></i>
+                    <small class="mt-1">Depan</small>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <input class="d-none" type="file" name="images[left]" id="image-left">
+                <div class="photo-preview square-ratio rounded" data-target="#image-left" style="background-image: url(/images/employees/{$employee->id}/{$employee->photos['left']})">
+                    <i class="ti ti-user-minus fs-7"></i>
+                    <small class="mt-1">Kiri</small>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <input class="d-none" type="file" name="images[right]" id="image-right">
+                <div class="photo-preview square-ratio rounded" data-target="#image-right" style="background-image: url(/images/employees/{$employee->id}/{$employee->photos['right']})">
+                    <i class="ti ti-user-plus fs-7"></i>
+                    <small class="mt-1">Kanan</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mb-5">
+        <a href="/employees" class="btn btn-light-primary me-3"><i class="ti ti-x"></i> Batalkan</a>
+        <button type="submit" class="btn btn-primary"><i class="ti ti-device-floppy"></i> Simpan</button>
+    </div>
+</div>
