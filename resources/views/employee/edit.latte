@@ -23,7 +23,9 @@
 {/block}
 
 {block content}
-<form action="/employees" method="post" class="row justify-content-center" enctype="multipart/form-data">
+<form action="/employees/{$employee->id}" method="post" class="row justify-content-center" enctype="multipart/form-data">
+    <input type="hidden" name="_method" value="PUT">
+
     {include 'form.latte'}
 </form>
 {/block}

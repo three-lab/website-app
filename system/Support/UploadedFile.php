@@ -10,6 +10,11 @@ class UploadedFile
         private array $file
     ){}
 
+    public function getError(): int
+    {
+        return $this->file['error'];
+    }
+
     public function getFilename(): string
     {
         $names = explode('.', $this->file['name']);

@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Repos\EmployeeRepo;
 use App\Requests\EmployeeRequest;
 use System\Components\Request;
+use System\Support\Facades\Auth;
 
 class EmployeeController
 {
@@ -29,12 +30,6 @@ class EmployeeController
         return view('employee.create');
     }
 
-    public function edit($id)
-    {
-        $employee = $this->employee->find($id);
-        return view('employee.edit', compact('employee'));
-    }
-
     public function store(EmployeeRequest $request)
     {
         $this->employeeRepo->add(
@@ -44,5 +39,34 @@ class EmployeeController
 
         return redirect()->back()
             ->with('swals', 'Berhasil menambahkan pegawai');
+    }
+
+    public function edit($id)
+    {
+        $employee = $this->employee->find($id);
+        return view('employee.edit', compact('employee'));
+    }
+
+    public function update(EmployeeRequest $request, $id)
+    {
+        $employee = $this->employee->find($id);
+
+        $this->employeeRepo->update(
+            $employee,
+            $request->validated(),
+            $request->file('images')
+        );
+
+        return redirect()->back()
+            ->with('swals', 'Berhasil mengupdate data pegawai');
+    }
+
+    public function destroy($id)
+    {
+        $employee = $this->employee->find($id);
+        $this->employeeRepo->delete($employee);
+
+        return redirect()->back()
+            ->with('swals', 'Berhasil mengupdate data pegawai');
     }
 }

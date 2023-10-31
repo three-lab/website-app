@@ -28,7 +28,7 @@ class View
         static::setFactory();
 
         $path = str_replace('.', '/', $path);
-        $errors = session()->pull('errors', []);
+        $errors = flatten(session()->pull('errors', []));
         $old = session()->pull('prev_input', []);
 
         static::$latte->addFunction('error', fn(string $name) => isset($errors[$name]) ? ucfirst($errors[$name]) : false);

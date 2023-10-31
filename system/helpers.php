@@ -88,6 +88,20 @@ if(!function_exists('keyprefix')) {
     }
 }
 
+if(!function_exists('flatten')) {
+    function flatten($array, $prefix = '') {
+        $result = [];
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result = array_merge($result, flatten($value, $prefix . $key . '.'));
+            } else {
+                $result[$prefix . $key] = $value;
+            }
+        }
+        return $result;
+    }
+}
+
 if(!function_exists('abort')) {
     function abort($code) {
         http_response_code($code);

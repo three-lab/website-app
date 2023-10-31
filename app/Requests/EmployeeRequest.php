@@ -8,16 +8,26 @@ class EmployeeRequest extends Request
 {
     protected function rules(): array
     {
-        return [
+        $rules = [
             'nik' => 'required',
             'fullname' => 'required',
             'birthdate' => 'required',
             'email' => 'required|email',
             'username' => 'required',
-            'password' => 'required',
             'gender' => 'required',
             'images' => 'required|array',
-            'images.*' => 'required|mimes:jpg,png,jpeg',
         ];
+
+        if($this->isMethod('POST')) {
+            $rules = array_merge(
+                $rules,
+                [
+                    'images.*' => 'required|uploaded_file|mimes:jpg,png,jpeg',
+                    'password' => 'required',
+                ]
+            );
+        }
+
+        return $rules;
     }
 }

@@ -1,3 +1,4 @@
 /vendor
 .env
 .env.testing
+public/images/employees

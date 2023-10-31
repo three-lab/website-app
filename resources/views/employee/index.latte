@@ -57,9 +57,12 @@
                                     <a href="/employees/{$employee->id}/edit" class="btn btn-sm btn-success me-1" title="edit">
                                         <i class="ti ti-pencil fs-3"></i>
                                     </a>
-                                    <a href="/" class="btn btn-sm btn-danger" title="hapus">
-                                        <i class="ti ti-trash fs-3"></i>
-                                    </a>
+                                    <form action="/employees/{$employee->id}" method="post">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn btn-sm btn-danger" title="hapus">
+                                            <i class="ti ti-trash fs-3"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                             {/foreach}

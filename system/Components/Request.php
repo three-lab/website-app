@@ -41,8 +41,9 @@ class Request
     {
         if(empty($this->rules()) && is_null($rules)) return;
 
+        $allData = array_merge($this->_data, $_FILES);
         $rules = (is_null($rules)) ? $this->rules() : $rules;
-        $validation = $this->valFactory->validate($this->all(), $rules);
+        $validation = $this->valFactory->validate($allData, $rules);
         $validation->setLanguage(config('app.lang'))->validate();
 
         if(!$validation->fails()) {
@@ -56,6 +57,12 @@ class Request
     public function validated()
     {
         return $this->_validatedData ?? [];
+    }
+
+    public function isMethod(string $method)
+    {
+        $reqMethod = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'] ?? null;
+        return strtoupper($reqMethod) === strtoupper($method);
     }
 
     protected function rules(): array

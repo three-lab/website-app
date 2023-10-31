@@ -14,5 +14,6 @@ Route::middleware('auth:web', function() {
     Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit']);
 
     Route::post('/employees', [EmployeeController::class, 'store']);
-    Route::post('/employees/{id}', [EmployeeController::class, 'update']);
+    Route::put('/employees/{id}', [EmployeeController::class, 'update']);
+    Route::delete('/employees/{id}', [EmployeeController::class, 'destroy']);
 });
