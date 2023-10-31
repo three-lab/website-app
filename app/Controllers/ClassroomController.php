@@ -37,6 +37,7 @@ class ClassroomController
 
         return response()->json([
             'message' => 'Berhasil mengupdate kelas',
+            'data' => $this->classroom->find($id)->toArray(),
         ], 200);
     }
 

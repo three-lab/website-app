@@ -103,12 +103,14 @@
 <script n:syntax="double">
 let editID = 0;
 let lastCounter = parseInt($('.table-counter').last().text());
+let editTableRow = null;
+
 const modal = document.getElementById('classroom-modal');
 const crModal = new bootstrap.Modal('#classroom-modal')
 const crTable = $('#classrooms-table').DataTable();
 const crForm = $('#classroom-form');
 
-function addTableElement(data) {
+function alterTableElement(data) {
     const actionElement = `<div class="d-flex">
         <button type="button" class="btn btn-sm btn-success btn-edit me-1" title="edit" data-id="${data.id}">
             <i class="ti ti-pencil fs-3"></i>
@@ -121,7 +123,12 @@ function addTableElement(data) {
         </form>
     </div>`;
 
-    crTable.row.add([++lastCounter, data.name, data.semester, actionElement]);
+    if(!editID) {
+        crTable.row.add([++lastCounter, data.name, data.semester, actionElement]);
+    } else {
+        editTableRow.data([editTableRow.data()[0], data.name, data.semester, actionElement]);
+    }
+
     crTable.draw();
 }
 
@@ -138,7 +145,7 @@ function addClassroom() {
                 timer: 1200,
             });
             
-            addTableElement(res.data);
+            alterTableElement(res.data);
             crForm.trigger('reset');
             crModal.hide();
         },
@@ -163,6 +170,10 @@ function editClassroom() {
                 text: res.message,
                 timer: 1200,
             });
+
+            alterTableElement(res.data);
+            crForm.trigger('reset');
+            crModal.hide();
         },
         error(res) {
             if(res.status == 422) {
@@ -203,6 +214,8 @@ $('#classrooms-table').on('click', '.btn-edit', function() {
     $('select[name=semester]').val(semester);
 
     editID = this.dataset.id;
+    editTableRow = crTable.row(button.parent().parent());
+
     crModal.show();
 });
 </script>
