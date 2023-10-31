@@ -5,8 +5,6 @@ namespace App\Controllers;
 use App\Models\Employee;
 use App\Repos\EmployeeRepo;
 use App\Requests\EmployeeRequest;
-use System\Components\Request;
-use System\Support\Facades\Auth;
 
 class EmployeeController
 {
