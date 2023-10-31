@@ -22,5 +22,8 @@ Route::middleware('auth:web', function() {
     // Classroom Management
     Route::get('/classrooms', [ClassroomController::class, 'index']);
     Route::get('/classrooms/create', [ClassroomController::class, 'create']);
-    Route::get('/classrooms/{id}/edit', [ClassroomController::class, 'edit']);
+
+    Route::post('/classrooms', [ClassroomController::class, 'store']);
+    Route::put('/classrooms/{id}', [ClassroomController::class, 'update']);
+    Route::delete('/classrooms/{id}', [ClassroomController::class, 'destroy']);
 });

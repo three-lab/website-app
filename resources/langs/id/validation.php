@@ -13,4 +13,5 @@ return [
     'rule.image' => ':attribute harus berupa gambar.',
     'rule.mimes' => ':attribute harus berupa file berformat :values.',
     'rule.file' => ':attribute harus berupa file.',
+    'rule.uploaded_file' => ':attribute harus berupa file terupload.'
 ];

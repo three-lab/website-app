@@ -46,13 +46,13 @@
                         <tbody>
                             {foreach $classrooms as $classroom}
                             <tr>
-                                <td>{$iterator->counter}</td>
+                                <td class="table-counter">{$iterator->counter}</td>
                                 <td>{$classroom->name}</td>
                                 <td>{$classroom->semester}</td>
                                 <td class="d-flex">
-                                    <a href="/classrooms/{$classroom->id}/edit" class="btn btn-sm btn-success me-1" title="edit">
+                                    <button type="button" class="btn btn-sm btn-success btn-edit me-1" title="edit" data-id="{$classroom->id}">
                                         <i class="ti ti-pencil fs-3"></i>
-                                    </a>
+                                    </button>
                                     <form action="/classrooms/{$classroom->id}" method="post">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button type="submit" class="btn btn-sm btn-danger" title="hapus">
@@ -74,27 +74,136 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah Kelas</h5>
+                <h5 class="modal-title" id="modal-title">Tambah Kelas</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <form method="post" class="modal-body" id="classroom-form">
                 <div class="mb-3">
                     <label for="name">Nama Kelas</label>
                     <input type="text" name="name" id="name" class="form-control">
+                    <div class="invalid-feedback invalid-name"></div>
                 </div>
                 <div class="mb-3">
                     <label for="name">Semester</label>
                     <select name="semester" id="semester" class="form-control">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
                     </select>
                 </div>
-            </div>
+                <div class="mb-3 text-end">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 {/block}
 
 {block script}
-<script>
-$('#classrooms-table').DataTable();
+<script n:syntax="double">
+let editID = 0;
+let lastCounter = parseInt($('.table-counter').last().text());
+const modal = document.getElementById('classroom-modal');
+const crModal = new bootstrap.Modal('#classroom-modal')
+const crTable = $('#classrooms-table').DataTable();
+const crForm = $('#classroom-form');
+
+function addTableElement(data) {
+    const actionElement = `<div class="d-flex">
+        <button type="button" class="btn btn-sm btn-success btn-edit me-1" title="edit" data-id="${data.id}">
+            <i class="ti ti-pencil fs-3"></i>
+        </button>
+        <form action="/classrooms/${data.id}" method="post">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit" class="btn btn-sm btn-danger" title="hapus">
+                <i class="ti ti-trash fs-3"></i>
+            </button>
+        </form>
+    </div>`;
+
+    crTable.row.add([++lastCounter, data.name, data.semester, actionElement]);
+    crTable.draw();
+}
+
+function addClassroom() {
+    $.ajax({
+        url: '/classrooms',
+        method: 'POST',
+        dataType: 'json',
+        data: crForm.serialize(),
+        success(res) {
+            Swal.fire({
+                icon: 'success',
+                text: res.message,
+                timer: 1200,
+            });
+            
+            addTableElement(res.data);
+            crForm.trigger('reset');
+            crModal.hide();
+        },
+        error(res) {
+            if(res.status == 422) {
+                const errors = (res.responseJSON).errors;
+                renderFormError(crForm, errors);
+            }
+        },
+    });
+}
+
+function editClassroom() {
+    $.ajax({
+        url: `/classrooms/${editID}`,
+        method: 'POST',
+        dataType: 'json',
+        data: crForm.serialize() + '&_method=PUT',
+        success(res) {
+            Swal.fire({
+                icon: 'success',
+                text: res.message,
+                timer: 1200,
+            });
+        },
+        error(res) {
+            if(res.status == 422) {
+                const errors = (res.responseJSON).errors;
+                renderFormError(crForm, errors);
+            }
+        },
+    });
+}
+
+crForm.submit(function(e) {
+    e.preventDefault();
+    resetFormError(crForm);
+
+    if(!editID) {
+        addClassroom();
+        return;
+    }
+
+    editClassroom();
+});
+
+modal.addEventListener('shown.bs.modal', () => {
+    $('#modal-title').text(editID ? 'Edit Kelas' : 'Tambah Kelas');
+});
+
+modal.addEventListener('hide.bs.modal', () => {
+    editID = 0;
+    crForm.trigger('reset');
+});
+
+$('#classrooms-table').on('click', '.btn-edit', function() {
+    const button = $(this);
+    const semester = button.parent().prev().text();
+    const className = button.parent().prev().prev().text();
+    
+    $('input[name=name]').val(className);
+    $('select[name=semester]').val(semester);
+
+    editID = this.dataset.id;
+    crModal.show();
+});
 </script>
 {/block}
