@@ -25,6 +25,14 @@
 </div>
 {/block}
 
+{block style}
+<style>
+#classrooms-table td:last-of-type {
+    display: flex;
+}
+</style>
+{/block}
+
 {block content}
 <div class="row">
     <div class="col-12">
@@ -49,7 +57,7 @@
                                 <td class="table-counter">{$iterator->counter}</td>
                                 <td>{$classroom->name}</td>
                                 <td>{$classroom->semester}</td>
-                                <td class="d-flex">
+                                <td>
                                     <button type="button" class="btn btn-sm btn-success btn-edit me-1" title="edit" data-id="{$classroom->id}">
                                         <i class="ti ti-pencil fs-3"></i>
                                     </button>
@@ -111,7 +119,8 @@ const crTable = $('#classrooms-table').DataTable();
 const crForm = $('#classroom-form');
 
 function alterTableElement(data) {
-    const actionElement = `<div class="d-flex">
+    lastCounter = isNaN(lastCounter) ? 0 : lastCounter;
+    const actionElement = `
         <button type="button" class="btn btn-sm btn-success btn-edit me-1" title="edit" data-id="${data.id}">
             <i class="ti ti-pencil fs-3"></i>
         </button>
@@ -121,7 +130,7 @@ function alterTableElement(data) {
                 <i class="ti ti-trash fs-3"></i>
             </button>
         </form>
-    </div>`;
+    `;
 
     if(!editID) {
         crTable.row.add([++lastCounter, data.name, data.semester, actionElement]);
@@ -144,7 +153,7 @@ function addClassroom() {
                 text: res.message,
                 timer: 1200,
             });
-            
+
             alterTableElement(res.data);
             crForm.trigger('reset');
             crModal.hide();
@@ -209,7 +218,7 @@ $('#classrooms-table').on('click', '.btn-edit', function() {
     const button = $(this);
     const semester = button.parent().prev().text();
     const className = button.parent().prev().prev().text();
-    
+
     $('input[name=name]').val(className);
     $('select[name=semester]').val(semester);
 
