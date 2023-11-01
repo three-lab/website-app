@@ -61,7 +61,7 @@
                                     <button type="button" class="btn btn-sm btn-success btn-edit me-1" title="edit" data-id="{$subject->id}">
                                         <i class="ti ti-pencil fs-3"></i>
                                     </button>
-                                    <form action="/subjects/{$subject->id}" method="post">
+                                    <form action="/subjects/{$subject->id}" class="d-inline" method="post">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button type="submit" class="btn btn-sm btn-danger" title="hapus">
                                             <i class="ti ti-trash fs-3"></i>
@@ -122,7 +122,7 @@ function alterTableElement(data) {
         <button type="button" class="btn btn-sm btn-success btn-edit me-1" title="edit" data-id="${data.id}">
             <i class="ti ti-pencil fs-3"></i>
         </button>
-        <form action="/subjects/${data.id}" method="post">
+        <form action="/subjects/${data.id}" class="d-inline" method="post">
             <input type="hidden" name="_method" value="DELETE">
             <button type="submit" class="btn btn-sm btn-danger" title="hapus">
                 <i class="ti ti-trash fs-3"></i>

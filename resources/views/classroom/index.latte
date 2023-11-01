@@ -25,14 +25,6 @@
 </div>
 {/block}
 
-{block style}
-<style>
-#classrooms-table td:last-of-type {
-    display: flex;
-}
-</style>
-{/block}
-
 {block content}
 <div class="row">
     <div class="col-12">
@@ -61,7 +53,7 @@
                                     <button type="button" class="btn btn-sm btn-success btn-edit me-1" title="edit" data-id="{$classroom->id}">
                                         <i class="ti ti-pencil fs-3"></i>
                                     </button>
-                                    <form action="/classrooms/{$classroom->id}" method="post">
+                                    <form action="/classrooms/{$classroom->id}" class="d-inline" method="post">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button type="submit" class="btn btn-sm btn-danger" title="hapus">
                                             <i class="ti ti-trash fs-3"></i>
@@ -124,7 +116,7 @@ function alterTableElement(data) {
         <button type="button" class="btn btn-sm btn-success btn-edit me-1" title="edit" data-id="${data.id}">
             <i class="ti ti-pencil fs-3"></i>
         </button>
-        <form action="/classrooms/${data.id}" method="post">
+        <form action="/classrooms/${data.id}" class="d-inline" method="post">
             <input type="hidden" name="_method" value="DELETE">
             <button type="submit" class="btn btn-sm btn-danger" title="hapus">
                 <i class="ti ti-trash fs-3"></i>
