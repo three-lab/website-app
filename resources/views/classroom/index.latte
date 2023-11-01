@@ -110,7 +110,7 @@
 {block script}
 <script n:syntax="double">
 let editID = 0;
-let lastCounter = parseInt($('.table-counter').last().text());
+let lastNumber = parseInt($('.table-counter').last().text());
 let editTableRow = null;
 
 const modal = document.getElementById('classroom-modal');
@@ -119,7 +119,7 @@ const crTable = $('#classrooms-table').DataTable();
 const crForm = $('#classroom-form');
 
 function alterTableElement(data) {
-    lastCounter = isNaN(lastCounter) ? 0 : lastCounter;
+    lastNumber = isNaN(lastNumber) ? 0 : lastNumber;
     const actionElement = `
         <button type="button" class="btn btn-sm btn-success btn-edit me-1" title="edit" data-id="${data.id}">
             <i class="ti ti-pencil fs-3"></i>
@@ -133,7 +133,7 @@ function alterTableElement(data) {
     `;
 
     if(!editID) {
-        crTable.row.add([++lastCounter, data.name, data.semester, actionElement]);
+        crTable.row.add([++lastNumber, data.name, data.semester, actionElement]);
     } else {
         editTableRow.data([editTableRow.data()[0], data.name, data.semester, actionElement]);
     }
