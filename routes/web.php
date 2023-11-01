@@ -3,6 +3,7 @@
 use App\Controllers\ClassroomController;
 use App\Controllers\DashboardController;
 use App\Controllers\EmployeeController;
+use App\Controllers\SubjectController;
 use System\Components\Route;
 
 require_once __DIR__ . '/auth.php';
@@ -26,4 +27,12 @@ Route::middleware('auth:web', function() {
     Route::post('/classrooms', [ClassroomController::class, 'store']);
     Route::put('/classrooms/{id}', [ClassroomController::class, 'update']);
     Route::delete('/classrooms/{id}', [ClassroomController::class, 'destroy']);
+
+    // Subject Management
+    Route::get('/subjects', [SubjectController::class, 'index']);
+    Route::get('/subjects/create', [SubjectController::class, 'create']);
+
+    Route::post('/subjects', [SubjectController::class, 'store']);
+    Route::put('/subjects/{id}', [SubjectController::class, 'update']);
+    Route::delete('/subjects/{id}', [SubjectController::class, 'destroy']);
 });
