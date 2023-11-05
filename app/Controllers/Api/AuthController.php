@@ -7,6 +7,7 @@ use App\Requests\Api\Auth\ForgotPasswordRequest;
 use App\Requests\Api\Auth\LoginRequest;
 use App\Requests\Api\Auth\ResetPasswordRequest;
 use App\Requests\Api\Auth\VerifyCodeRequest;
+use App\Resources\EmployeeResource;
 use App\Traits\ApiResponser;
 use System\Support\Facades\Auth;
 
@@ -65,7 +66,7 @@ class AuthController
 
     public function user()
     {
-        $user = Auth::user()->toArray();
+        $user = EmployeeResource::make(Auth::user());
         return $this->success(compact('user'));
     }
 }
