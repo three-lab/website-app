@@ -1,0 +1,138 @@
+{layout '../layouts/panel.latte'}
+
+{block header}
+<div class="card bg-light-info shadow-none position-relative overflow-hidden">
+    <div class="card-body px-4 py-3">
+        <div class="row align-items-center">
+            <div class="col-9">
+                <h4 class="fw-semibold mb-8">Jadwal Pelajaran</h4>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a class="text-muted " href="/dashboard">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item" aria-current="page">Jadwal</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-3">
+                <div class="text-center mb-n5">
+                    <img src="../../dist/images/breadcrumb/ChatBc.png" alt="" class="img-fluid mb-n4">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block style}
+<style>
+    .schedule-content {
+        border-bottom: 6px solid #dee6ff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-bottom: .75em;
+    }
+
+    .schedule-content .schedule-time {
+        font-size: .85em;
+        word-spacing: .5em;
+    }
+</style>
+{/block}
+
+{block content}
+<div class="row justify-content-center">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-5 align-items-end">
+                    <div class="col-md-10">
+                        <label for="" class="mb-2">JADWAL KELAS</label>
+                        <select name="" id="classroom" class="form-control">
+                            {foreach $classrooms as $classroom}
+                            <option value="{$classroom->id}">{$classroom->name}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-md-2 text-end">
+                        <a href="" class="btn btn-primary">Tambah</a>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Senin</th>
+                                <th>Selasa</th>
+                                <th>Rabu</th>
+                                <th>Kamis</th>
+                                <th>Jum'at</th>
+                                <th>Sabtu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {for $i = 1; $i < 7; $i++}
+                                <td class="p-1 schedule-container" id="schedule-{$i}"></td>
+                                {/for}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block script}
+<script n:syntax="double">
+
+function fillEmptySchedule() {
+    let maxHeight = 0;
+    const containers = $('.schedule-container');
+
+    containers.each((i, container) => {
+        if($(container).children().length < 1) {
+            const height = container.clientHeight;
+            container.innerHTML = `
+                <div class="d-flex align-items-center justify-content-center" style="padding-top: 50%; padding-bottom: 50%;">
+                    <small class="text-center">Tidak ada jadwal<small>
+                </div>
+            `;
+        }
+    });
+}
+
+function setSchedule() {
+    const classroom = $('#classroom').val();
+
+    $('.schedule-container').html('');
+
+    $.ajax({
+        url: `/schedules/${classroom}/json`,
+        dataType: 'json',
+        success: (res) => {
+            res.data.map((schedule) => {
+                $(`td#schedule-${schedule.day}`).append(`
+                    <div class="bg-light-primary text-black px-2 py-2 schedule-content">
+                        <small class="schedule-time">${schedule.time_start} - ${schedule.time_end}</small>
+                        <p class="fw-bold m-0 fs-4">${schedule.subject}</p>
+                        <small>${schedule.employee}</small>
+                    </div>
+                `);
+            });
+
+            fillEmptySchedule();
+        },
+    });
+}
+
+$('#classroom').change(() => setSchedule());
+
+setTimeout(() => setSchedule(), 200);
+</script>
+{/block}

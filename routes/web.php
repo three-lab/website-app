@@ -3,6 +3,7 @@
 use App\Controllers\ClassroomController;
 use App\Controllers\DashboardController;
 use App\Controllers\EmployeeController;
+use App\Controllers\ScheduleController;
 use App\Controllers\SubjectController;
 use System\Components\Route;
 
@@ -35,4 +36,8 @@ Route::middleware('auth:web', function() {
     Route::post('/subjects', [SubjectController::class, 'store']);
     Route::put('/subjects/{id}', [SubjectController::class, 'update']);
     Route::delete('/subjects/{id}', [SubjectController::class, 'destroy']);
+
+    // Schedule Management
+    Route::get('/schedules', [ScheduleController::class, 'index']);
+    Route::get('/schedules/{classId}/json', [ScheduleController::class, 'json']);
 });
