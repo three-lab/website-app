@@ -41,13 +41,13 @@ class EmployeeController
 
     public function edit($id)
     {
-        $employee = $this->employee->find($id);
+        $employee = $this->employee->findOrFail($id);
         return view('employee.edit', compact('employee'));
     }
 
     public function update(EmployeeRequest $request, $id)
     {
-        $employee = $this->employee->find($id);
+        $employee = $this->employee->findOrFail($id);
 
         $this->employeeRepo->update(
             $employee,
@@ -61,7 +61,7 @@ class EmployeeController
 
     public function destroy($id)
     {
-        $employee = $this->employee->find($id);
+        $employee = $this->employee->findOrFail($id);
         $this->employeeRepo->delete($employee);
 
         return redirect()->back()

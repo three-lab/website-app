@@ -32,7 +32,7 @@ class ClassroomController
 
     public function update(ClassroomRequest $request, $id)
     {
-        $classroom = $this->classroom->find($id);
+        $classroom = $this->classroom->findOrFail($id);
         $classroom->update($request->validated());
 
         return response()->json([
@@ -43,7 +43,7 @@ class ClassroomController
 
     public function destroy($id)
     {
-        $classroom = $this->classroom->find($id);
+        $classroom = $this->classroom->findOrFail($id);
         $classroom->delete();
 
         return redirect()->back()

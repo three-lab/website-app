@@ -38,7 +38,7 @@ class ScheduleController
 
     public function json($classId)
     {
-        $classroom = $this->classroom->find($classId);
+        $classroom = $this->classroom->findOrFail($classId);
         $schedules = (new ScheduleRepo)->getByClassroom($classroom);
 
         return response()->json([

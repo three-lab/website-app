@@ -111,5 +111,7 @@ if(!function_exists('abort')) {
         } catch(RuntimeException) {
             echo "Error: $code";
         }
+
+        exit;
     }
 }

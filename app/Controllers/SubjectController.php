@@ -32,7 +32,7 @@ class SubjectController
 
     public function update(SubjectRequest $request, $id)
     {
-        $subject = $this->subject->find($id);
+        $subject = $this->subject->findOrFail($id);
         $subject->update($request->validated());
 
         return response()->json([
@@ -43,7 +43,7 @@ class SubjectController
 
     public function destroy($id)
     {
-        $subject = $this->subject->find($id);
+        $subject = $this->subject->findOrFail($id);
         $subject->delete();
 
         return redirect()->back()

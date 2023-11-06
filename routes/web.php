@@ -40,4 +40,5 @@ Route::middleware('auth:web', function() {
     // Schedule Management
     Route::get('/schedules', [ScheduleController::class, 'index']);
     Route::get('/schedules/{classId}/json', [ScheduleController::class, 'json']);
+    Route::get('/schedules/{classId}/create', [ScheduleController::class, 'create']);
 });

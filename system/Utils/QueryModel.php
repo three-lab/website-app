@@ -16,6 +16,14 @@ trait QueryModel
         return $this->mapToModel($stmt->fetch(PDO::FETCH_ASSOC));
     }
 
+    public function findOrFail($id)
+    {
+        $model = $this->find($id);
+
+        if(!$model) abort(404);
+        return $model;
+    }
+
     public function get(array $params, bool $isSingle = false) {
         $query = "SELECT * FROM {$this->table} WHERE";
         $query .= $this->composeQuery($params, "AND");
