@@ -15,6 +15,14 @@ class ScheduleRepo
         $this->schedule = new Schedule;
     }
 
+    public function add(Classroom $classroom, array $data): Schedule
+    {
+        return $this->schedule->insert(array_merge(
+            ['classroom_id' => $classroom->id],
+            $data,
+        ));
+    }
+
     public function getByClassroom(Classroom $classroom)
     {
         $conn = $this->schedule->conn();

@@ -1,0 +1,157 @@
+{layout '../layouts/panel.latte'}
+
+{block header}
+<div class="card bg-light-info shadow-none position-relative overflow-hidden">
+    <div class="card-body px-4 py-3">
+        <div class="row align-items-center">
+            <div class="col-9">
+                <h4 class="fw-semibold mb-8">Tambah Jadwal Kelas {$classroom->name}</h4>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a class="text-muted " href="/dashboard">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item" aria-current="page">Jadwal</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-3">
+                <div class="text-center mb-n5">
+                    <img src="../../dist/images/breadcrumb/ChatBc.png" alt="" class="img-fluid mb-n4">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block content}
+<div class="row justify-content-center">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <ul class="nav nav-tabs d-flex justify-content-between" role="tablist">
+                    {foreach days(true) as $day}
+                    <li class="nav-item">
+                        <button class="nav-link {$iterator->counter == 1 ? 'active'} px-5 btn-day" data-bs-toggle="tab" data-bs-target="#schedule-content-{$iterator->counter}" data-day="{$iterator->counter}" type="button" role="tab">{$day}</button>
+                    </li>
+                    {/foreach}
+                </ul>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-content">
+                    {for $i = 1; $i <= 6; $i++}
+                    <div class="tab-pane fade {$i == 1 ? 'show active'}" id="schedule-content-{$i}">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <th>Jam Mulai</th>
+                                    <th>Mata Pelajaran</th>
+                                    <th>Guru Pengajar</th>
+                                    <th>Jam Selesai</th>
+                                    <td>Aksi</td>
+                                </thead>
+                                <tbody>
+                                    {foreach $schedules[$i] ?? [] as $schedule}
+                                    <tr>
+                                        <td>{$schedule->time_start}</td>
+                                        <td>{$schedule->subject}</td>
+                                        <td>{$schedule->employee}</td>
+                                        <td>{$schedule->time_end}</td>
+                                        <td class="d-flex">
+                                            <form action="/schedules/{$schedule->id}" class="d-inline" method="post">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <input type="hidden" name="day" value="{$i}">
+                                                <button type="submit" class="btn btn-sm btn-danger" title="hapus">
+                                                    <i class="ti ti-trash fs-3"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#schedule-modal">
+                                Tambah Jadwal
+                            </button>
+                        </div>
+                    </div>
+                    {/for}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="schedule-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title">Tambah Jadwal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" class="modal-body" id="subject-form" action="/schedules/{$classroom->id}">
+                <input type="hidden" name="day" value="1">
+                <div class="mb-3">
+                    <label for="subject">Mata Pelajaran</label>
+                    <select name="subject_id" id="subject" class="form-control {error('subject_id') ? 'is-invalid'}">
+                        {foreach $subjects as $subject}
+                        <option value="{$subject->id}" {old('subject_id') == $subject->id ? 'selected'}>{$subject->name}</option>
+                        {/foreach}
+                    </select>
+                    <div class="invalid-feedback">{error('subject_id')}</div>
+                </div>
+                <div class="mb-3">
+                    <label for="employee">Guru Pelajaran</label>
+                    <select name="employee_id" id="employee" class="form-control" {error('employee_id') ? 'is-invalid'}>
+                        {foreach $employees as $employee}
+                        <option value="{$employee->id}" {old('employee_id') == $employee->id ? 'selected'}>{$employee->fullname}</option>
+                        {/foreach}
+                    </select>
+                    <div class="invalid-feedback">{error('employee_id')}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="time_start">Waktu Mulai</label>
+                        <input type="time" name="time_start" id="time_start" class="form-control {error('time_start') ? 'is-invalid'}" value="{old('time_start')}">
+                        <div class="invalid-feedback invalid-time_start"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="time_end">Waktu Selesai</label>
+                        <input type="time" name="time_end" id="time_end" class="form-control {error('time_end') ? 'is-invalid'}" value="{old('time_end')}">
+                        <div class="invalid-feedback invalid-time_end"></div>
+                    </div>
+                </div>
+                <div class="mb-3 text-end">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block script}
+<script n:syntax="double">
+    const schModal = new bootstrap.Modal('#schedule-modal');
+
+    {{if hasError()}}
+    schModal.show();
+    {{/if}}
+
+    $('.btn-day').click(function() {
+        $('input[name=day]').val(this.dataset.day);
+    });
+
+    {{if session()->has('day_open')}}
+        const day = {{session()->pull('day_open')}}
+
+        $(`.nav-link[data-day=${day}]`).trigger('click');
+        $(`input[name=day]`).val(day);
+    {{/if}}
+</script>
+{/block}

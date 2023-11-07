@@ -57,7 +57,7 @@
                         </select>
                     </div>
                     <div class="col-md-2 text-end">
-                        <a href="" class="btn btn-primary">Tambah</a>
+                        <button id="add-btn" class="btn btn-primary">Atur Jadwal</button>
                     </div>
                 </div>
 
@@ -132,6 +132,10 @@ function setSchedule() {
 }
 
 $('#classroom').change(() => setSchedule());
+$('#add-btn').click(function() {
+    const classId = $('#classroom').val();
+    document.location.href = `/schedules/${classId}/create`;
+});
 
 setTimeout(() => setSchedule(), 200);
 </script>

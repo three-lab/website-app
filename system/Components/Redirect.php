@@ -14,9 +14,9 @@ class Redirect
         $this->route = $route;
     }
 
-    public function back()
+    public function back(?string $param = null)
     {
-        $this->route = $_SERVER['HTTP_REFERER'];
+        $this->route = $_SERVER['HTTP_REFERER'] . $param;
         return $this;
     }
 

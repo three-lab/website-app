@@ -6,7 +6,6 @@ use App\Models\Verification;
 use Cake\Chronos\Chronos;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use Firebase\JWT\SignatureInvalidException;
 use System\Components\Model;
 use System\Enums\AuthGuard;
 use Throwable;

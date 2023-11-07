@@ -41,4 +41,7 @@ Route::middleware('auth:web', function() {
     Route::get('/schedules', [ScheduleController::class, 'index']);
     Route::get('/schedules/{classId}/json', [ScheduleController::class, 'json']);
     Route::get('/schedules/{classId}/create', [ScheduleController::class, 'create']);
+
+    Route::post('/schedules/{classId}', [ScheduleController::class, 'store']);
+    Route::delete('/schedules/{id}', [ScheduleController::class, 'destroy']);
 });
