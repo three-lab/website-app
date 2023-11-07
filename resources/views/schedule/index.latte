@@ -131,6 +131,7 @@ function setSchedule() {
     });
 }
 
+$('#classroom').select2();
 $('#classroom').change(() => setSchedule());
 $('#add-btn').click(function() {
     const classId = $('#classroom').val();
