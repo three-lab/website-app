@@ -71,6 +71,15 @@
                                         </td>
                                     </tr>
                                     {/foreach}
+                                    {if empty($schedules[$i])}
+                                    <tr></tr>
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            <img src="/assets/img/illustration-empty.svg" alt="Empty" width="35%">
+                                            <h4 class="mt-2">Jadwal masih kosong</h4>
+                                        </td>
+                                    </tr>
+                                    {/if}
                                 </tbody>
                             </table>
                         </div>
