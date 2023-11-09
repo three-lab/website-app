@@ -1,0 +1,8 @@
+<?php
+
+use System\Application;
+
+require './vendor/autoload.php';
+
+$app = Application::register();
+$app->run();

@@ -56,7 +56,14 @@ class Application
 
     public function run()
     {
-        if(php_sapi_name() == 'cli') return;
+        if(php_sapi_name() == 'cli') {
+            $app = new \Ahc\Cli\Application(config('app.name'), '1.0');
+            $commands = require_once base_path('routes/console.php');
+
+            $commands($app);
+            $app->handle($_SERVER['argv']);
+            return $app;
+        };
 
         if(!$route = $this->handleRoute())
             return abort(404);
