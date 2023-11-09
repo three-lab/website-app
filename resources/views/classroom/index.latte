@@ -39,7 +39,6 @@
                             <tr>
                                 <th>#</th>
                                 <th>Nama Kelas</th>
-                                <th>Semester</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -48,7 +47,6 @@
                             <tr>
                                 <td class="table-counter">{$iterator->counter}</td>
                                 <td>{$classroom->name}</td>
-                                <td>{$classroom->semester}</td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-success btn-edit me-1" title="edit" data-id="{$classroom->id}">
                                         <i class="ti ti-pencil fs-3"></i>
@@ -82,13 +80,6 @@
                     <label for="name">Nama Kelas</label>
                     <input type="text" name="name" id="name" class="form-control">
                     <div class="invalid-feedback invalid-name"></div>
-                </div>
-                <div class="mb-3">
-                    <label for="name">Semester</label>
-                    <select name="semester" id="semester" class="form-control">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                    </select>
                 </div>
                 <div class="mb-3 text-end">
                     <button type="submit" class="btn btn-primary">Simpan</button>
@@ -125,9 +116,9 @@ function alterTableElement(data) {
     `;
 
     if(!editID) {
-        crTable.row.add([++lastNumber, data.name, data.semester, actionElement]);
+        crTable.row.add([++lastNumber, data.name, actionElement]);
     } else {
-        editTableRow.data([editTableRow.data()[0], data.name, data.semester, actionElement]);
+        editTableRow.data([editTableRow.data()[0], data.name, actionElement]);
     }
 
     crTable.draw();
@@ -208,11 +199,9 @@ modal.addEventListener('hide.bs.modal', () => {
 
 $('#classrooms-table').on('click', '.btn-edit', function() {
     const button = $(this);
-    const semester = button.parent().prev().text();
-    const className = button.parent().prev().prev().text();
+    const className = button.parent().prev().text();
 
     $('input[name=name]').val(className);
-    $('select[name=semester]').val(semester);
 
     editID = this.dataset.id;
     editTableRow = crTable.row(button.parent().parent());

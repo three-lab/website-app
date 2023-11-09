@@ -11,7 +11,6 @@ class ClassroomRequest extends Request
     {
         return [
             'name:Nama Kelas' => 'required',
-            'semester:' => 'required|numeric',
         ];
     }
 
