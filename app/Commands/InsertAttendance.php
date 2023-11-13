@@ -18,6 +18,6 @@ class InsertAttendance extends Command
 
     public function execute()
     {
-        dd($this->attRepo->insertDaily(date('N')));
+        $this->attRepo->insertDaily(date('N'));
     }
 }
