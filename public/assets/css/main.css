@@ -12,3 +12,7 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
+.dataTables_length select[name=subjects-table_length] {
+    --bs-form-select-bg-img: none !important;
+}

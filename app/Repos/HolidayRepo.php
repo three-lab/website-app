@@ -26,6 +26,23 @@ class HolidayRepo
         $this->holiday = new Holiday;
     }
 
+    public function isHoliday(string $date): bool
+    {
+        $year = substr($date, 0, 4);
+        $month = substr($date, 5, 2);
+
+        $this->syncByMonth($month, $year);
+
+        $conn = $this->holiday->conn();
+        $stmt = $conn->prepare("SELECT * FROM `holidays`
+        WHERE :date = `holidays`.`date_start`
+           OR :date = `holidays`.`date_end`
+           OR (:date > `holidays`.`date_start` AND :date < `holidays`.`date_end`)");
+
+        $stmt->execute(compact('date'));
+        return $stmt->rowCount() > 0;
+    }
+
     public function getByMonth(int $month, int $year): array
     {
         $this->syncByMonth($month, $year);
