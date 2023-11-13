@@ -3,6 +3,7 @@
 use App\Controllers\ClassroomController;
 use App\Controllers\DashboardController;
 use App\Controllers\EmployeeController;
+use App\Controllers\HolidayController;
 use App\Controllers\ScheduleController;
 use App\Controllers\SubjectController;
 use System\Components\Route;
@@ -44,4 +45,8 @@ Route::middleware('auth:web', function() {
 
     Route::post('/schedules/{classId}', [ScheduleController::class, 'store']);
     Route::delete('/schedules/{id}', [ScheduleController::class, 'destroy']);
+
+    // Holidays
+    Route::get('/holidays', [HolidayController::class, 'index']);
+    Route::post('/holidays/json', [HolidayController::class, 'json']);
 });

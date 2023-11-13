@@ -36,7 +36,7 @@ class HolidayRepo
 
         $stmt->execute([
             'year' => $year,
-            'month' => $month
+            'month' => $month,
         ]);
 
         return $stmt->fetchAll(PDO::FETCH_OBJ);
