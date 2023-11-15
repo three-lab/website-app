@@ -3,6 +3,7 @@
 namespace App\Repos;
 
 use App\Models\Classroom;
+use App\Models\Employee;
 use App\Models\Schedule;
 use PDO;
 
@@ -21,6 +22,31 @@ class ScheduleRepo
             ['classroom_id' => $classroom->id],
             $data,
         ));
+    }
+
+    public function getByDaytime(int $day, string $time, ?Employee $employee = null, ?bool $isAttempted = null)
+    {
+        $clauses = [
+            'day' => $day,
+            'time' => $time,
+        ];
+
+        $conn = $this->schedule->conn();
+        $query = "SELECT * FROM schedules WHERE day = :day AND :time BETWEEN time_start AND time_end";
+
+        if(!is_null($isAttempted))
+            $query .= " AND time_start " . ($isAttempted ? "IS NOT NULL" : "IS NULL");
+
+        if(!is_null($employee))
+            $query .= " AND employee_id = :employee_id";
+
+        if(!is_null($employee))
+            $clauses['employee_id'] = $employee->id;
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute($clauses);
+
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function getByClassroom(Classroom $classroom)

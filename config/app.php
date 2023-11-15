@@ -11,4 +11,7 @@ return [
 
     // Varification code expiration in minutes
     'verify_expiration' => 60,
+
+    // AI Endpoint
+    'ai_endpoint' => env('AI_ENDPOINT'),
 ];

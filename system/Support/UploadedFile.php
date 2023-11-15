@@ -27,6 +27,11 @@ class UploadedFile
         return end($names);
     }
 
+    public function getTempPath(): string
+    {
+        return $this->file['tmp_name'];
+    }
+
     public function store(string $path, ?string $name = null)
     {
         FileSystem::makeDirectory($path);

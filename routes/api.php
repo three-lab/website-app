@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\Api\AttendanceController;
 use App\Controllers\Api\AuthController;
 use System\Components\Route;
 
@@ -10,4 +11,5 @@ Route::post('/reset-pass', [AuthController::class, 'resetPass']);
 
 Route::middleware('auth:api', function() {
     Route::get('/user', [AuthController::class, 'user']);
+    Route::post('/attempt', [AttendanceController::class, 'attempt']);
 });

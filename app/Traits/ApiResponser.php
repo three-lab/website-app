@@ -4,7 +4,7 @@ namespace App\Traits;
 
 trait ApiResponser
 {
-    protected function success(array $data, string $message = '', int $code = 200)
+    protected function success(array $data = [], string $message = '', int $code = 200)
     {
         return response()->json([
             'meta' => [
@@ -16,7 +16,7 @@ trait ApiResponser
         ], $code);
     }
 
-    protected function error(array $data, string $message = '', int $code = 400)
+    protected function error(array $data = [], string $message = '', int $code = 400)
     {
         return response()->json([
             'meta' => [
