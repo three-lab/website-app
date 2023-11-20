@@ -2,8 +2,8 @@
 
 namespace App\Controllers\Api;
 
-use App\Repos\AttendanceRepo;
 use App\Requests\Api\AttemptAttRequest;
+use App\Services\AttendanceService;
 use App\Traits\ApiResponser;
 use System\Support\Facades\Auth;
 
@@ -11,16 +11,16 @@ class AttendanceController
 {
     use ApiResponser;
 
-    private AttendanceRepo $attendanceRepo;
+    private AttendanceService $attendanceService;
 
     public function __construct()
     {
-        $this->attendanceRepo = new AttendanceRepo;
+        $this->attendanceService = new AttendanceService();
     }
 
     public function attempt(AttemptAttRequest $request)
     {
-        $attempt = $this->attendanceRepo->attemptFace(Auth::user(), $request->file('image'));
+        $attempt = $this->attendanceService->attemptFace(Auth::user(), $request->file('image'));
 
         if(!$attempt->status)
             return $this->error(message: $attempt->message, code: 422);
