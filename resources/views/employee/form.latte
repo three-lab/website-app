@@ -71,7 +71,7 @@
         </div>
         <div class="card-body row justify-content-center">
             <div class="col-md-4 mb-4">
-                <input class="d-none" type="file" name="images[front]" id="image-front">
+                <input class="d-none" type="file" name="images[front]" id="image-front" accept="image/*">
                 <div class="photo-preview square-ratio rounded" data-target="#image-front" style="background-image: url(/images/employees/{$employee?->id}/{$employee?->photos['front']})">
                     <i class="ti ti-user-scan fs-8"></i>
                     <small class="mt-1">Depan</small>
@@ -79,7 +79,7 @@
                 <small class="text-danger" style="margin-left: 2.5rem;">{error('images.front')}</small>
             </div>
             <div class="col-md-4 mb-4">
-                <input class="d-none" type="file" name="images[left]" id="image-left">
+                <input class="d-none" type="file" name="images[left]" id="image-left" accept="image/*">
                 <div class="photo-preview square-ratio rounded" data-target="#image-left" style="background-image: url(/images/employees/{$employee?->id}/{$employee?->photos['left']})">
                     <i class="ti ti-user-minus fs-7"></i>
                     <small class="mt-1">Kiri</small>
@@ -87,7 +87,7 @@
                 <small class="text-danger" style="margin-left: 2.5rem;">{error('images.left')}</small>
             </div>
             <div class="col-md-4 mb-4">
-                <input class="d-none" type="file" name="images[right]" id="image-right">
+                <input class="d-none" type="file" name="images[right]" id="image-right" accept="image/*">
                 <div class="photo-preview square-ratio rounded" data-target="#image-right" style="background-image: url(/images/employees/{$employee?->id}/{$employee?->photos['right']})">
                     <i class="ti ti-user-plus fs-7"></i>
                     <small class="mt-1">Kanan</small>

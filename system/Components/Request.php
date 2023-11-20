@@ -27,6 +27,9 @@ class Request
         // Set validation language
         $this->valFactory->messages()->add($language, __('validation'));
 
+        // Add custom validation
+        $this->valFactory->addRule('person_name', new \System\Validation\Rules\PersonName);
+
         $this->parseHeaders();
         $this->validate();
     }
