@@ -17,6 +17,16 @@ if(!function_exists('group_array')) {
     }
 }
 
+if(!function_exists('gender')) {
+    function gender(string $gender) {
+        return match ($gender) {
+            'male' => 'Pria',
+            'female' => 'Wanita',
+            'default' => '-',
+        };
+    }
+}
+
 if(!function_exists('days')) {
     function days(bool $activeDay = false) {
         $days = [

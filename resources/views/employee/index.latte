@@ -52,7 +52,7 @@
                                 <td>{$employee->fullname}</td>
                                 <td>{$employee->username}</td>
                                 <td>{$employee->email}</td>
-                                <td>{$employee->gender}</td>
+                                <td>{gender($employee->gender)}</td>
                                 <td class="d-flex">
                                     <a href="/employees/{$employee->id}/edit" class="btn btn-sm btn-success me-1" title="edit">
                                         <i class="ti ti-pencil fs-3"></i>
