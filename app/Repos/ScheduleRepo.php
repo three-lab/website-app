@@ -24,7 +24,7 @@ class ScheduleRepo
         ));
     }
 
-    public function getByDaytime(int $day, string $time, ?Employee $employee = null, ?bool $isAttempted = null)
+    public function getByDaytime(int $day, string $time, ?Employee $employee = null)
     {
         $clauses = [
             'day' => $day,
@@ -33,9 +33,6 @@ class ScheduleRepo
 
         $conn = $this->schedule->conn();
         $query = "SELECT * FROM schedules WHERE day = :day AND :time BETWEEN time_start AND time_end";
-
-        if(!is_null($isAttempted))
-            $query .= " AND time_start " . ($isAttempted ? "IS NOT NULL" : "IS NULL");
 
         if(!is_null($employee))
             $query .= " AND employee_id = :employee_id";

@@ -11,5 +11,8 @@ Route::post('/reset-pass', [AuthController::class, 'resetPass']);
 
 Route::middleware('auth:api', function() {
     Route::get('/user', [AuthController::class, 'user']);
-    Route::post('/attempt', [AttendanceController::class, 'attempt']);
+
+    Route::prefix('/attendances', function() {
+        Route::post('/attempt', [AttendanceController::class, 'attempt']);
+    });
 });
