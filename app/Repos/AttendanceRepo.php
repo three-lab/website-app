@@ -7,8 +7,6 @@ use App\Models\Employee;
 use App\Models\Schedule;
 use App\Models\Subject;
 use Cake\Chronos\Chronos;
-use GuzzleHttp\Client;
-use System\Support\UploadedFile;
 
 class AttendanceRepo
 {
@@ -17,7 +15,6 @@ class AttendanceRepo
     private Subject $subject;
 
     private HolidayRepo $holidayRepo;
-    private ScheduleRepo $scheduleRepo;
 
     public function __construct()
     {
@@ -26,7 +23,6 @@ class AttendanceRepo
         $this->subject = new Subject;
 
         $this->holidayRepo = new HolidayRepo;
-        $this->scheduleRepo = new ScheduleRepo;
     }
 
     public function insertDaily(int $day)

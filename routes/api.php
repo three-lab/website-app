@@ -14,5 +14,8 @@ Route::middleware('auth:api', function() {
 
     Route::prefix('/attendances', function() {
         Route::post('/attempt', [AttendanceController::class, 'attempt']);
+        Route::get('/status', [AttendanceController::class, 'status']);
     });
 });
+
+Route::get('/status', [AttendanceController::class, 'status']);

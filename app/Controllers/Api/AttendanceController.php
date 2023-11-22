@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Api;
 
+use App\Models\Employee;
 use App\Requests\Api\AttemptAttRequest;
 use App\Services\AttendanceService;
 use App\Traits\ApiResponser;
@@ -26,5 +27,12 @@ class AttendanceController
             return $this->error(message: $attempt->message, code: 422);
 
         $this->success(message: $attempt->message, code: 200);
+    }
+
+    public function status()
+    {
+        $status = $this->attendanceService->getStatus(Auth::user());
+
+        return $this->success(data: $status, code: 200);
     }
 }
