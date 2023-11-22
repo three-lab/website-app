@@ -17,5 +17,3 @@ Route::middleware('auth:api', function() {
         Route::get('/status', [AttendanceController::class, 'status']);
     });
 });
-
-Route::get('/status', [AttendanceController::class, 'status']);
