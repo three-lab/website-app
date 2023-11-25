@@ -45,6 +45,7 @@ trait DataModel
         return match($type) {
             'datetime' => Chronos::createFromFormat('Y-m-d H:i:s', $value),
             'date' => Chronos::createFromFormat('Y-m-d', $value),
+            'time' => Chronos::createFromFormat('H:i:s', $value),
             'array' => json_decode($value, true),
             'object' => json_decode($value),
         };

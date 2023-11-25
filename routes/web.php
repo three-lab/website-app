@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\AttendanceController;
 use App\Controllers\ClassroomController;
 use App\Controllers\DashboardController;
 use App\Controllers\EmployeeController;
@@ -45,6 +46,9 @@ Route::middleware('auth:web', function() {
 
     Route::post('/schedules/{classId}', [ScheduleController::class, 'store']);
     Route::delete('/schedules/{id}', [ScheduleController::class, 'destroy']);
+
+    // Attendances Management
+    Route::get('/attendances', [AttendanceController::class, 'index']);
 
     // Holidays
     Route::get('/holidays', [HolidayController::class, 'index']);
