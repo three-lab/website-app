@@ -6,6 +6,9 @@ return [
     // Application Language
     'lang' => 'id',
 
+    // Application TimeZone
+    'timezone' => 'Asia/Jakarta',
+
     'jwt_secret' => env('JWT_SECRET', ''),
     'jwt_algo' => env('JWT_ALGO', 'HS256'),
 

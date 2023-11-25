@@ -20,6 +20,7 @@ class Application
         private Kernel $kernel,
         private array $routes
     ) {
+        date_default_timezone_set(config('app.timezone'));
         Model::boot();
 
         if(!Session::isStarted())
