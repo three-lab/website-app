@@ -22,3 +22,9 @@ function resetFormError(form) {
     form.find(`.form-control`).removeClass('is-invalid');
     form.find(`.invalid-feedback`).text();
 }
+
+const pusher = new Pusher('c4f4bd322d0faf89392f', {
+    cluster: 'ap1',
+});
+
+const pusherChannel = pusher.subscribe('apsensi');
