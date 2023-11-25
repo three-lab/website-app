@@ -7,10 +7,10 @@ use System\Components\Route;
 class Kernel
 {
     public array $middlewareAliasses = [
-        'auth' => \App\Middlewares\AuthMiddleware::class,
-        'api' => \App\Middlewares\ApiMiddleware::class,
-        'guest' => \App\Middlewares\GuestMiddleware::class,
-        'web' => \App\Middlewares\WebMiddleware::class,
+        'auth' => \App\Http\Middlewares\AuthMiddleware::class,
+        'api' => \App\Http\Middlewares\ApiMiddleware::class,
+        'guest' => \App\Http\Middlewares\GuestMiddleware::class,
+        'web' => \App\Http\Middlewares\WebMiddleware::class,
     ];
 
     public function routes()

@@ -1,7 +1,7 @@
 <?php
 
-use App\Controllers\Api\AttendanceController;
-use App\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\AttendanceController;
+use App\Http\Controllers\Api\AuthController;
 use System\Components\Route;
 
 Route::post('/login', [AuthController::class, 'login']);

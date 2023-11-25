@@ -1,12 +1,12 @@
 <?php
 
-use App\Controllers\AttendanceController;
-use App\Controllers\ClassroomController;
-use App\Controllers\DashboardController;
-use App\Controllers\EmployeeController;
-use App\Controllers\HolidayController;
-use App\Controllers\ScheduleController;
-use App\Controllers\SubjectController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ClassroomController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\SubjectController;
 use System\Components\Route;
 
 require_once __DIR__ . '/auth.php';

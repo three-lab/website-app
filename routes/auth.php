@@ -1,9 +1,9 @@
 <?php
 
-use App\Controllers\Auth\ForgotPasswordController;
-use App\Controllers\Auth\LoginController;
-use App\Controllers\Auth\ResetPasswordController;
-use App\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\VerificationController;
 use System\Components\Route;
 
 Route::prefix('/auth', function() {
