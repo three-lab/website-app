@@ -20,7 +20,7 @@ class AttendanceController
 
     public function attempt(AttemptAttRequest $request)
     {
-        $attempt = $this->attendanceService->attemptFace(Auth::user(), $request->file('image'));
+        $attempt = $this->attendanceService->attempt(Auth::user(), $request->file('image'));
 
         if(!$attempt->status)
             return $this->error(message: $attempt->message, code: 422);

@@ -12,9 +12,13 @@ class AttemptAttRequest extends Request
 
     protected function rules(): array
     {
-        return [
-            'image' => 'required|uploaded_file|mimes:jpg,png,jpeg',
-        ];
+        $attStatus = $_SERVER['attendance']['status'];
+        $rules = [];
+
+        if(!$attStatus->scanned)
+            $rules['image'] = 'required|uploaded_file|mimes:jpg,png,jpeg';
+
+        return $rules;
     }
 
     protected function failedValidation(ErrorBag $errors)

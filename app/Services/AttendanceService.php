@@ -24,16 +24,34 @@ class AttendanceService
         $this->attendanceRepo = new AttendanceRepo();
     }
 
-    public function attemptFace(Employee $employee, UploadedFile $image)
+    public function attempt(Employee $employee, ?UploadedFile $image)
     {
+        $attStatus = $_SERVER['attendance']['status'];
         $schedules = $this->scheduleRepo->getByDaytime(date('N'), date('H:i:s'), $employee, false);
-        $url = config('app.ai_endpoint');
 
         if(empty($schedules)) return (object) [
             'status' => false,
             'message' => 'Tidak terdapat jadwal',
         ];
 
+        // Recognize image if present
+        if(!is_null($image) && $image?->getError() != 4) {
+            $faceAttempt = $this->attemptFace($employee, $image);
+            if(!$faceAttempt->status) return $faceAttempt;
+        }
+
+        $this->attendanceRepo->makePresence($employee, $schedules[0]);
+        Pusher::trigger('attendance-updated', []);
+
+        return (object) [
+            'status' => true,
+            'message' => 'Presensi Berhasil direkam',
+        ];
+    }
+
+    public function attemptFace(Employee $employee, UploadedFile $image)
+    {
+        $url = config('app.ai_endpoint');
         $response = (new Client())->post("$url/recognize", [
             'multipart' => [
                 [
@@ -46,26 +64,19 @@ class AttendanceService
 
         $response = json_decode($response->getBody()->getContents());
 
-        if($response?->status == 'error') return (object) [
-            'status' => false,
-            'message' => 'Wajah tidak dapat dikenali'
-        ];
-
         if($response?->status == 'ok') {
-
             if($response->employee != $employee->id) return (object) [
                 'status' => false,
                 'message' => 'Wajah tidak sesuai',
             ];
 
-            $this->attendanceRepo->makePresence($employee, $schedules[0]);
-            Pusher::trigger('attendance-updated', []);
-
-            return (object) [
-                'status' => true,
-                'message' => 'Presensi Berhasil direkam',
-            ];
+            return (object) ['status' => true];
         }
+
+        return (object) [
+            'status' => false,
+            'message' => 'Wajah tidak dapat dikenali'
+        ];
     }
 
     public function getStatus(Employee $employee)
