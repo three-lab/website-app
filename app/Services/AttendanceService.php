@@ -27,12 +27,22 @@ class AttendanceService
     public function attempt(Employee $employee, ?UploadedFile $image)
     {
         $attStatus = $_SERVER['attendance']['status'];
-        $schedules = $this->scheduleRepo->getByDaytime(date('N'), date('H:i:s'), $employee, false);
+        $schedules = $this->scheduleRepo->getByDaytime(date('N'), date('H:i:s'), $employee);
 
-        if(empty($schedules)) return (object) [
-            'status' => false,
-            'message' => 'Tidak terdapat jadwal',
-        ];
+        if($attStatus->started) {
+            $this->attendanceRepo->endPresence($employee);
+
+            return (object) [
+                'status' => true,
+                'message' => 'Presensi berhasil diselesaikan',
+            ];
+        }
+
+        if(empty($schedules) || !$attStatus->canAttempt)
+            return (object) [
+                'status' => false,
+                'message' => 'Tidak terdapat jadwal',
+            ];
 
         // Recognize image if present
         if(!is_null($image) && $image?->getError() != 4) {

@@ -98,6 +98,17 @@ class AttendanceRepo
         );
     }
 
+    public function endPresence(Employee $employee)
+    {
+        $conn = $this->attendance->conn();
+        $stmt = $conn->prepare("UPDATE attendances SET time_end = :time_end WHERE time_start IS NOT NULL AND employee_id = :employee_id");
+
+        return $stmt->execute([
+            'time_end' => date('H:i:s'),
+            'employee_id' => $employee->id,
+        ]);
+    }
+
     private function getMappedRelation(object $attendance, ?Schedule $schedule = null): object
     {
         $mappedData = [
