@@ -7,7 +7,7 @@ use App\Http\Requests\Api\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Api\Auth\LoginRequest;
 use App\Http\Requests\Api\Auth\ResetPasswordRequest;
 use App\Http\Requests\Api\Auth\VerifyCodeRequest;
-use App\Resources\EmployeeResource;
+use App\Http\Resources\EmployeeResource;
 use App\Traits\ApiResponser;
 use System\Support\Facades\Auth;
 

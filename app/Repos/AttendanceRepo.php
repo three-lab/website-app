@@ -50,6 +50,19 @@ class AttendanceRepo
         );
     }
 
+    public function getAll()
+    {
+        $conn = $this->attendance->conn();
+        $stmt = $conn->prepare("SELECT * FROM attendances ORDER BY date DESC");
+
+        $stmt->execute();
+
+        return array_map(
+            fn($att) => $this->getMappedRelation($att),
+            $stmt->fetchAll(PDO::FETCH_OBJ)
+        );
+    }
+
     public function insertDaily(int $day)
     {
         $schedules = $this->schedule->get(compact('day'));
@@ -89,6 +102,7 @@ class AttendanceRepo
     {
         $mappedData = [
             'status' => $attendance->status,
+            'date' => $attendance->date,
             'time_start' => $attendance->time_start,
             'time_end' => $attendance->time_end,
             'employee' => $this->employee->find($attendance->employee_id),

@@ -49,6 +49,8 @@ Route::middleware('auth:web', function() {
 
     // Attendances Management
     Route::get('/attendances', [AttendanceController::class, 'index']);
+    Route::get('/attendances/daily', [AttendanceController::class, 'dailyJson']);
+    Route::get('/attendances/all', [AttendanceController::class, 'allJson']);
 
     // Holidays
     Route::get('/holidays', [HolidayController::class, 'index']);

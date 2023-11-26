@@ -1,0 +1,83 @@
+<script n:syntax="double">
+    function generateDailyContent(att) {
+        return `<div class="col-md-4">
+            <div class="card today-attendance">
+                ${attendanceStatusIcon(att.status)}
+
+                <div class="card-body">
+                    <h5>${att.employee.fullname}</h5>
+                    ${attendanceStatusBadge(att.status)}
+
+                    <div class="d-flex mt-3 border-top pt-2">
+                        <span>
+                            <i class="ti ti-clock"></i>
+                            <small>
+                                ${att.schedule.time_start} - ${att.schedule.time_end}
+                            </small>
+                        </span>
+                        <span class="ms-4">
+                            <i class="ti ti-notebook"></i>
+                            <small>${att.subject.name}</small>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    function setDailyContent() {
+        const dailyContainer = $('#daily-container');
+
+        dailyContainer.css('min-height', dailyContainer.height() + 'px');
+
+        $.ajax({
+            url: '/attendances/daily',
+            dataType: 'json',
+            success: (res) => {
+                dailyContainer.html('');
+
+                res.map((attendance) => {
+                    dailyContainer.append(generateDailyContent(attendance));
+                });
+
+                if(res.length < 1)
+                    dailyContainer.append(`<div class="col-md-6">
+                        <img src="/assets/img/illustration-empty-attendance.svg" alt="Kosong" width="80%">
+                        <h5 class="mt-3 text-muted text-center">Tidak Terdapat Log Presensi untuk Ditampilkan</h5>
+                    </div>`);
+            }
+        });
+    }
+
+    function setAllContent() {
+        const allContainer = $('#all-content-container');
+        allContainer.css('min-height', allContainer.height() + 'px');
+
+        $.ajax({
+            url: '/attendances/all',
+            dataType: 'json',
+            success: (res) => {
+                allContainer.html('');
+
+                res.map((attendance) => {
+                    allContainer.append(`<tr>
+                        <td>${attendance.employee.fullname}</td>
+                        <td>${attendance.subject.name}</td>
+                        <td>${moment(attendance.date).format('DD/MM/YYYY')}</td>
+                        <td>${attendanceStatusBadge(attendance.status)}</td>
+                        <td>${attendance.time_start ?? '-'}</td>
+                        <td>${attendance.time_end ?? '-'}</td>
+                    </tr>`);
+                });
+            },
+        });
+    }
+
+    setDailyContent();
+    setAllContent();
+
+    pusherChannel.bind('attendance-updated', function() {
+        setDailyContent();
+        setAllContent();
+    });
+</script>

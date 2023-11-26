@@ -8,6 +8,7 @@ use App\Repos\AttendanceRepo;
 use App\Repos\ScheduleRepo;
 use GuzzleHttp\Client;
 use PDO;
+use System\Support\Facades\Pusher;
 use System\Support\UploadedFile;
 
 class AttendanceService
@@ -58,6 +59,7 @@ class AttendanceService
             ];
 
             $this->attendanceRepo->makePresence($employee, $schedules[0]);
+            Pusher::trigger('attendance-updated', []);
 
             return (object) [
                 'status' => true,

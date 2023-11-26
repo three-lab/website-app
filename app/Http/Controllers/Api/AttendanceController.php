@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Employee;
 use App\Http\Requests\Api\AttemptAttRequest;
 use App\Services\AttendanceService;
 use App\Traits\ApiResponser;
