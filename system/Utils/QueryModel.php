@@ -24,9 +24,10 @@ trait QueryModel
         return $model;
     }
 
-    public function get(array $params, bool $isSingle = false) {
+    public function get(array $params, bool $isSingle = false, array $orders = []) {
         $query = "SELECT * FROM {$this->table} WHERE";
         $query .= $this->composeQuery($params, "AND");
+        $query .= $this->composeOrderQuery($orders);
 
         $stmt = $this->conn()->prepare($query);
         $stmt->execute($params);
@@ -120,5 +121,17 @@ trait QueryModel
         $query .= "VALUES (" . implode(',', $values) . ")";
 
         return $query;
+    }
+
+    private function composeOrderQuery(array $orders)
+    {
+        if(empty($orders)) return '';
+
+        $query = " ORDER BY";
+
+        foreach($orders as $key => $value)
+            $query .= " `{$key}` {$value},";
+
+        return substr($query, 0, -1);
     }
 }

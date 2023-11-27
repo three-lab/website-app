@@ -40,9 +40,7 @@ if(!function_exists('days')) {
 
         if($activeDay) return $days;
 
-        return array_merge(
-            $days,
-            [7 => 'Minggu'],
-        );
+        $days[7] = 'Minggu';
+        return $days;
     }
 }

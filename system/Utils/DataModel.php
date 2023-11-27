@@ -3,6 +3,7 @@
 namespace System\Utils;
 
 use Cake\Chronos\Chronos;
+use stdClass;
 
 trait DataModel
 {
@@ -28,7 +29,7 @@ trait DataModel
         return $this->_data;
     }
 
-    protected function mapToModel(array|bool $data)
+    public function mapToModel(array|bool|stdClass $data)
     {
         if(!$data) return null;
 

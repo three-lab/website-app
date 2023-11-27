@@ -13,7 +13,8 @@ class ApiMiddleware
     public function handle(Request $request, callable $next)
     {
         Auth::guard(AuthGuard::API)->model(Employee::class);
-        $_SERVER['attendance']['status'] = (object) (new AttendanceService)->getStatus(Auth::user());
+        $_SERVER['attendance']['status'] = (!is_null(Auth::user())) ?
+            (object) (new AttendanceService)->getStatus(Auth::user()) : null;
 
         return $next($request);
     }
