@@ -16,7 +16,7 @@ class SubjectController
 
     public function index()
     {
-        $subjects = $this->subject->all();
+        $subjects = $this->subject->all(['id' => 'DESC']);
         return view('subject.index', compact('subjects'));
     }
 

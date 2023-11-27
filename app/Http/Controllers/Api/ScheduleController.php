@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\ScheduleResource;
-use App\Models\Employee;
 use App\Models\Schedule;
 use App\Repos\ScheduleRepo;
 use App\Traits\ApiResponser;

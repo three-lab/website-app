@@ -16,7 +16,7 @@ class ClassroomController
 
     public function index()
     {
-        $classrooms = $this->classroom->all();
+        $classrooms = $this->classroom->all(['name' => 'ASC']);
         return view('classroom.index', compact('classrooms'));
     }
 

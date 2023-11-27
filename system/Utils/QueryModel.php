@@ -57,9 +57,10 @@ trait QueryModel
         return $stmt->rowCount();
     }
 
-    public function all()
+    public function all(array $orders = [])
     {
-        $stmt = $this->conn()->query("SELECT * FROM {$this->table}");
+        $query = "SELECT * FROM {$this->table}" . $this->composeOrderQuery($orders);
+        $stmt = $this->conn()->query($query);
         $results = $stmt->fetchAll();
 
         return array_map(fn($result) => $this->mapToModel($result), $results);
