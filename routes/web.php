@@ -13,6 +13,7 @@ require_once __DIR__ . '/auth.php';
 
 Route::middleware('auth:web', function() {
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/dashboard/chart', [DashboardController::class, 'chartJson']);
 
     // Employee Management
     Route::get('/employees', [EmployeeController::class, 'index']);

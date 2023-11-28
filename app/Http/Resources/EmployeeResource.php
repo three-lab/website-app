@@ -12,11 +12,13 @@ class EmployeeResource extends Resource
             'id' => $this->id,
             'fullname' => $this->fullname,
             'nik' => $this->nik,
+            'birthplace' => $this->birthplace,
             'birthdate' => $this->birthdate->format('d-m-Y'),
             'photos' => $this->photos,
             'username' => $this->username,
             'email' => $this->email,
             'gender' => $this->gender,
+            'address' => $this->address,
         ];
     }
 }
