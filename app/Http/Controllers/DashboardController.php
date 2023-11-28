@@ -10,4 +10,9 @@ class DashboardController
     {
         return view('panel.dashboard');
     }
+
+    public function chartJson()
+    {
+
+    }
 }

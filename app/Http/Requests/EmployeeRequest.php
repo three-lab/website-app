@@ -11,10 +11,12 @@ class EmployeeRequest extends Request
         $rules = [
             'nik:NIK' => 'required|numeric|digits:16',
             'fullname:Nama Lengkap' => 'required|person_name',
+            'birthplace:Tempat Lahir' => 'required|string',
             'birthdate:Tgl. Lahir' => 'required|date',
             'email:Email' => 'required|email',
             'username:Username' => 'required|alpha_dash',
             'gender:Jenis Kelamin' => 'required',
+            'address:Alamat' => 'required|string',
             'images:Gambar' => 'required|array',
         ];
 

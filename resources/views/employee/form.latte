@@ -10,16 +10,23 @@
         <div class="card-body row">
             <div class="col-md-12">
                 <div class="mb-3">
+                    <label for="nik">NIK</label>
+                    <input type="number" name="nik" id="nik" class="form-control {error('nik') ? 'is-invalid'}" value="{old('nik') ?? $employee?->nik}" autofocus>
+                    <div class="invalid-feedback">{error('nik')}</div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="mb-3">
                     <label for="fullname">Nama Lengkap</label>
-                    <input type="text" class="form-control {error('fullname') ? 'is-invalid'}" name="fullname" value="{old('fullname') ?? $employee?->fullname}" autofocus>
+                    <input type="text" class="form-control {error('fullname') ? 'is-invalid'}" name="fullname" value="{old('fullname') ?? $employee?->fullname}">
                     <div class="invalid-feedback">{error('fullname')}</div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label for="nik">NIK</label>
-                    <input type="number" name="nik" id="nik" class="form-control {error('nik') ? 'is-invalid'}" value="{old('nik') ?? $employee?->nik}">
-                    <div class="invalid-feedback">{error('nik')}</div>
+                    <label for="birthplace">Tempat Lahir</label>
+                    <input type="text" class="form-control {error('birthplace') ? 'is-invalid'}" name="birthplace" value="{old('birthplace') ?? $employee?->birthplace}">
+                    <div class="invalid-feedback">{error('birthplace')}</div>
                 </div>
             </div>
             <div class="col-md-6">
@@ -58,6 +65,13 @@
                     <label for="password">Password</label>
                     <input type="password" name="password" id="password" class="form-control {error('password') ? 'is-invalid'}" {$employee?->password ? 'disabled'}>
                     <div class="invalid-feedback">{error('password')}</div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <label for="address">Alamat</label>
+                    <textarea name="address" id="" cols="30" rows="5" class="form-control {error('address') ? 'is-invalid'}">{$employee?->address}</textarea>
+                    <div class="invalid-feedback">{error('address')}</div>
                 </div>
             </div>
         </div>

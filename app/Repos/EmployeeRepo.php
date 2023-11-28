@@ -20,12 +20,14 @@ class EmployeeRepo
         $employee = $this->employee->insert([
             'nik' => $data['nik'],
             'fullname' => $data['fullname'],
+            'birthplace' => $data['birthplace'],
             'birthdate' => $data['birthdate'],
             'email' => $data['email'],
             'photos' => '[]',
             'username' => $data['username'],
             'password' => password($data['password']),
             'gender' => $data['gender'],
+            'address' => $data['address'],
         ]);
 
         foreach($photos as $name => $file)

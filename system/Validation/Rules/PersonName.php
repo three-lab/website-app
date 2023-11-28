@@ -10,6 +10,6 @@ class PersonName extends Rule
 
     public function check(mixed $value): bool
     {
-        return is_string($value) && preg_match('/^[a-zA-Z, .\s]+$/', $value);
+        return is_string($value) && preg_match("/^[a-zA-Z, .'\s]+$/", $value);
     }
 }

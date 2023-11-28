@@ -11,6 +11,7 @@ class EmployeeResource extends Resource
         return [
             'id' => $this->id,
             'fullname' => $this->fullname,
+            'nik' => $this->nik,
             'birthdate' => $this->birthdate->format('d-m-Y'),
             'photos' => $this->photos,
             'username' => $this->username,
