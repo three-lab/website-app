@@ -40,7 +40,7 @@ class DashboardRepo
         $series = [
             ['name' => 'Hadir', 'data' => $this->genSeriesData($results, $months, 'present')],
             ['name' => 'Terlambat', 'data' => $this->genSeriesData($results, $months, 'late')],
-            ['name' => 'Absen', 'data' => $this->genSeriesData($results, $months, 'absence')],
+            ['name' => 'Absen', 'data' => $this->genSeriesData($results, $months, 'absent')],
             ['name' => 'Izin', 'data' => $this->genSeriesData($results, $months, 'excused')],
         ];
 

@@ -72,11 +72,16 @@ class AttendanceRepo
             return;
 
         array_map(function($schedule) use($date) {
-            $this->attendance->insert([
+            $data = [
                 'employee_id' => $schedule->employee_id,
                 'subject_id' => $schedule->subject_id,
                 'date' => $date,
-            ]);
+            ];
+
+            $attendance = $this->attendance->get($data);
+            if(!empty($attendance)) return;
+
+            $this->attendance->insert($data);
         }, $schedules);
     }
 
@@ -107,6 +112,38 @@ class AttendanceRepo
             'time_end' => date('H:i:s'),
             'employee_id' => $employee->id,
         ]);
+    }
+
+    public function makeAbsences(string $date)
+    {
+        $conn = $this->attendance->conn();
+        $stmt = $conn->prepare("UPDATE attendances SET status = 'absent' WHERE date < :date AND time_start IS NULL");
+
+        return $stmt->execute(compact('date'));
+    }
+
+    public function endUncompleteAttendance()
+    {
+        $conn = $this->attendance->conn();
+        $stmt = $conn->prepare("SELECT * FROM attendances WHERE time_end IS NULL AND date < :date AND status != 'absent'");
+        $stmt->execute(['date' => date('Y-m-d')]);
+
+        $uncompletes = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        array_map(function($uncomplete) {
+            $day = Chronos::createFromFormat('Y-m-d', $uncomplete->date)->format('N');
+            $schedule = $this->schedule->get([
+                'employee_id' => $uncomplete->employee_id,
+                'subject_id' => $uncomplete->subject_id,
+                'day' => $day
+            ], true);
+
+            $this->attendance->update(['time_end' => $schedule->time_end], [
+                'employee_id' => $uncomplete->employee_id,
+                'subject_id' => $uncomplete->subject_id,
+                'date' => $uncomplete->date,
+            ]);
+        }, $uncompletes);
     }
 
     private function getMappedRelation(object $attendance, ?Schedule $schedule = null): object
