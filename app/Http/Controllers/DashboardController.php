@@ -16,11 +16,15 @@ class DashboardController
 
     public function index()
     {
-        return view('panel.dashboard');
+        $total = $this->dashboardRepo->getCountData();
+        return view('panel.dashboard', compact('total'));
     }
 
     public function chartJson()
     {
-        $this->dashboardRepo->getChartData();
+        return response()->json(
+            $this->dashboardRepo->getChartData(),
+            200
+        );
     }
 }
