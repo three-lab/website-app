@@ -20,5 +20,6 @@ Route::middleware('auth:api', function() {
         Route::post('/attempt', [AttendanceController::class, 'attempt']);
         Route::get('/status', [AttendanceController::class, 'status']);
         Route::get('/logs', [AttendanceController::class, 'logs']);
+        Route::post('/excuse', [AttendanceController::class, 'excuse']);
     });
 });
