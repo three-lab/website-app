@@ -27,6 +27,18 @@ if(!function_exists('gender')) {
     }
 }
 
+if(!function_exists('attStatus')) {
+    function attStatus(string $status) {
+        return match($status) {
+            'present' => 'Hadir',
+            'late' => 'Terlambat',
+            'absent' => 'Absen',
+            'excused' => 'Izin',
+            default => $status,
+        };
+    }
+}
+
 if(!function_exists('days')) {
     function days(bool $activeDay = false) {
         $days = [

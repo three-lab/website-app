@@ -18,6 +18,8 @@ trait DataModel
     {
         if(!array_key_exists($name, $this->_data)) return null;
 
+        if(is_null($this->_data[$name])) return null;
+
         if(array_key_exists($name, $this->casts))
             return $this->castConverter($this->_data[$name], $this->casts[$name]);
 
