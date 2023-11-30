@@ -21,4 +21,5 @@ return [
     'rule.string' => ':attribute harus berupa string.',
     'rule.uploaded_file' => ':attribute harus berupa file terupload.',
     'rule.person_name' => ':attribute harus berupa nama yang valid.',
+    'rule.same' => ':attribute harus sama dengan :field.',
 ];
