@@ -15,6 +15,7 @@ use System\Utils\MiddlewareManager;
 class Application
 {
     private array $routeParams = [];
+    private static array $app = [];
 
     public function __construct(
         private Kernel $kernel,
@@ -53,6 +54,11 @@ class Application
         $app = new self($kernel, $routes);
 
         return $app;
+    }
+
+    public static function getApp()
+    {
+        return static::$app;
     }
 
     public function run()
@@ -95,6 +101,7 @@ class Application
             if(!$matched) continue;
             if($route['type'] != $method) continue;
 
+            static::$app['route'] = $route;
             $this->parseRouteParams($params);
             return $route;
         }
@@ -108,6 +115,8 @@ class Application
 
         foreach($params as $param)
             $this->routeParams[] = $param[0][0];
+
+        static::$app['route']['params'] = $this->routeParams;
     }
 
     private function injectParams(string $controller, string $method)

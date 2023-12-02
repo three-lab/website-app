@@ -19,6 +19,7 @@ return [
     'rule.numeric' => ':attribute harus berupa angka.',
     'rule.required' => ':attribute harus diisi.',
     'rule.string' => ':attribute harus berupa string.',
+    'rule.unique' => ':attribute telah terdaftar.',
     'rule.uploaded_file' => ':attribute harus berupa file terupload.',
     'rule.person_name' => ':attribute harus berupa nama yang valid.',
     'rule.same' => ':attribute harus sama dengan :field.',

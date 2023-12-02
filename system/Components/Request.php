@@ -2,8 +2,10 @@
 
 namespace System\Components;
 
+use Doctrine\DBAL\DriverManager;
 use Somnambulist\Components\Validation\ErrorBag;
 use Somnambulist\Components\Validation\Factory;
+use Somnambulist\Components\Validation\Rules;
 use System\Support\UploadedFile;
 use System\Utils\RequestData;
 
@@ -19,6 +21,7 @@ class Request
     {
         $inputStream = @json_decode(file_get_contents('php://input'), true);
         $language = config('app.lang');
+        $dbalConn = DriverManager::getConnection(config('dbal'));
 
         $this->_data = $inputStream ? $inputStream : $_REQUEST;
         $this->valFactory = new Factory;
@@ -29,6 +32,7 @@ class Request
 
         // Add custom validation
         $this->valFactory->addRule('person_name', new \System\Validation\Rules\PersonName);
+        $this->valFactory->addRule('unique', new Rules\Unique($dbalConn));
 
         $this->parseHeaders();
         $this->validate();

@@ -8,6 +8,7 @@ use System\Components\View;
 use System\Components\Redirect;
 use System\Components\Request;
 use System\Components\Response;
+use System\Support\AppParser;
 
 if(!function_exists('env')) {
     function env(string $name, string $fallback = null) {
@@ -19,6 +20,12 @@ if(!function_exists('__')) {
     function __(string $name) {
         $lang = explode('.', trim($name));
         return Language::getLanguage($lang[0], $lang[1] ?? null);
+    }
+}
+
+if(!function_exists('app')) {
+    function app() {
+        return new AppParser();
     }
 }
 
