@@ -12,9 +12,9 @@ class ScheduleRequest extends Request
         return [
             'employee_id:Pegawai' => 'required|numeric',
             'subject_id:Pelajaran' => 'required|numeric',
-            'day' => 'required|numeric',
-            'time_start' => 'required|string',
-            'time_end' => 'required|string'
+            'day: Hari' => 'required|numeric',
+            'time_start:Waktu Mulai' => 'required|string',
+            'time_end:Waktu Selesai' => 'required|after_time:time_start',
         ];
     }
 

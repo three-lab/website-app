@@ -127,12 +127,12 @@
                     <div class="col-md-6 mb-3">
                         <label for="time_start">Waktu Mulai</label>
                         <input type="time" name="time_start" id="time_start" class="form-control {error('time_start') ? 'is-invalid'}" value="{old('time_start')}">
-                        <div class="invalid-feedback invalid-time_start"></div>
+                        <div class="invalid-feedback invalid-time_start">{error('time_start')}</div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="time_end">Waktu Selesai</label>
                         <input type="time" name="time_end" id="time_end" class="form-control {error('time_end') ? 'is-invalid'}" value="{old('time_end')}">
-                        <div class="invalid-feedback invalid-time_end"></div>
+                        <div class="invalid-feedback invalid-time_end">{error('time_end')}</div>
                     </div>
                 </div>
                 <div class="mb-3 text-end">

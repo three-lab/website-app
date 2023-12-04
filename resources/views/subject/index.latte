@@ -204,6 +204,7 @@ sjForm.submit(function(e) {
 });
 
 modal.addEventListener('shown.bs.modal', () => {
+    resetFormError(sjForm);
     $('#modal-title').text(editID ? 'Edit Mata Pelajaran' : 'Tambah Mata Pelajaran');
 });
 
