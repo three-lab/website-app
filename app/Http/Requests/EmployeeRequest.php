@@ -13,7 +13,7 @@ class EmployeeRequest extends Request
             'nik:NIK' => $this->generateUniqueRule('nik', 'required|numeric|digits:16'),
             'fullname:Nama Lengkap' => 'required|person_name',
             'birthplace:Tempat Lahir' => 'required|string',
-            'birthdate:Tgl. Lahir' => 'required|date',
+            'birthdate:Tgl. Lahir' => 'required|date|before:today',
             'email:Email' => $this->generateUniqueRule('email', 'required|email'),
             'username:Username' => $this->generateUniqueRule('username', 'required|alpha_dash'),
             'gender:Jenis Kelamin' => 'required',

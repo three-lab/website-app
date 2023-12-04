@@ -6,6 +6,7 @@ return [
     'rule.alpha_dash' => ':attribute harus berupa huruf, angka, dan garis bawah.',
     'rule.alpha_spaces' => ':attribute harus berupa huruf, angka, dan spasi.',
     'rule.array' => ':attribute harus berupa array.',
+    'rule.before' => ':attribute harus tanggal sebelum :time.',
     'rule.date' => ':attribute harus berupa tanggal.',
     'rule.datetime' => ':attribute harus berupa tanggal dan waktu.',
     'rule.digits' => ':attribute harus terdiri dari :length digit.',

@@ -11,7 +11,7 @@
             <div class="col-md-12">
                 <div class="mb-3">
                     <label for="nik">NIK</label>
-                    <input type="number" name="nik" id="nik" class="form-control {error('nik') ? 'is-invalid'}" value="{old('nik') ?? $employee?->nik}" autofocus>
+                    <input type="text" name="nik" id="nik" class="form-control {error('nik') ? 'is-invalid'}" value="{old('nik') ?? $employee?->nik}" autofocus>
                     <div class="invalid-feedback">{error('nik')}</div>
                 </div>
             </div>
@@ -115,3 +115,11 @@
         <button type="submit" class="btn btn-primary"><i class="ti ti-device-floppy"></i> Simpan</button>
     </div>
 </div>
+
+<script>
+    const nikInput = document.getElementById('nik');
+
+    nikInput.addEventListener('keyup', function() {
+        this.value = this.value.replace(/\D/g, '');
+    });
+</script>
