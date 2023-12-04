@@ -70,7 +70,7 @@
             <div class="col-md-12">
                 <div class="mb-3">
                     <label for="address">Alamat</label>
-                    <textarea name="address" id="" cols="30" rows="5" class="form-control {error('address') ? 'is-invalid'}">{$employee?->address}</textarea>
+                    <textarea name="address" id="" cols="30" rows="5" class="form-control {error('address') ? 'is-invalid'}">{old('address') ?? $employee?->address}</textarea>
                     <div class="invalid-feedback">{error('address')}</div>
                 </div>
             </div>
