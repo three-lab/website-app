@@ -28,7 +28,7 @@ if(!function_exists('gender')) {
 }
 
 if(!function_exists('attStatus')) {
-    function attStatus(string $status) {
+    function attStatus(?string $status) {
         return match($status) {
             'present' => 'Hadir',
             'late' => 'Terlambat',
