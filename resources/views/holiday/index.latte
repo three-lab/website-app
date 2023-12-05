@@ -38,8 +38,8 @@
                 </nav>
             </div>
             <div class="col-3">
-                <div class="text-center mb-n5">
-                    <img src="../../dist/images/breadcrumb/ChatBc.png" alt="" class="img-fluid mb-n4">
+                <div class="text-end">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#holiday-modal">Tambah</button>
                 </div>
             </div>
         </div>
@@ -58,22 +58,76 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" tabindex="-1" id="holiday-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title">Edit Hari Libur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" class="modal-body" id="holiday-form">
+                <div class="mb-3">
+                    <label for="type">Jenis</label>
+                    <select name="type" id="type" class="form-control">
+                        <option value="regular">Umum</option>
+                        <option value="semester">Semester</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="date_start">Tanggal Mulai</label>
+                            <input type="date" name="date_start" id="date_start" class="form-control">
+                            <div class="invalid-feedback invalid-date_start"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="date_end">Tanggal Akhir</label>
+                            <input type="date" name="date_end" id="date_end" class="form-control">
+                            <div class="invalid-feedback invalid-date_end"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="information">Deskripsi</label>
+                    <input type="text" name="information" id="information" class="form-control">
+                    <div class="invalid-feedback invalid-information"></div>
+                </div>
+                <div class="mb-3 text-end">
+                    <button type="button" id="btn-delete-event" class="btn btn-danger me-2">Hapus</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {/block}
 
 {block script}
 <script n:syntax="double">
     let events = [];
+    let activeEventId = null;
     const dateNow = new Date();
+
+    const hdForm = $('#holiday-form');
+    const delEvent = $('#btn-delete-event');
+    const modal = document.getElementById('holiday-modal');
+    const hdModal = new bootstrap.Modal('#holiday-modal');
 
     const calendarEl = document.getElementById('calendar');
     const calendar = new FullCalendar.Calendar(calendarEl, {
         locale: 'id',
         initialView: 'dayGridMonth',
-        eventColor: 'red',
         headerToolbar: {
             left: "prev next",
             center: "title",
             right: "dayGridMonth,timeGridWeek,timeGridDay",
+        },
+        eventClick: calendarEventClick,
+        eventClassNames: function ({ event: calendarEvent }) {
+            return 'calendar-bg-' + calendarEvent._def.extendedProps.calendar;
         },
     });
 
@@ -98,6 +152,10 @@
                         title: holiday.information,
                         start: `${holiday.date_start}T00:00`,
                         end: `${holiday.date_end}T23:59`,
+                        extendedProps: {
+                            calendar: holiday.type == 'regular' ?
+                                'danger' : 'success',
+                        },
                     });
                 });
 
@@ -107,11 +165,144 @@
         });
     }
 
+    function calendarEventClick(info) {
+        const eventId = info.event.id;
+        activeEventId = eventId;
+
+        $.ajax({
+            url: `/holidays/${eventId}/json`,
+            success: (res) => {
+                for(key in res) {
+                    $(`#${key}`).val(res[key]);
+                }
+
+                hdModal.show();
+            },
+        });
+    }
+
+    function addEvent() {
+        $.ajax({
+            url: `/holidays/store`,
+            method: 'POST',
+            dataType: 'JSON',
+            data: hdForm.serialize(),
+            success: (res) => {
+                Swal.fire({
+                    icon: 'success',
+                    text: res.message,
+                    timer: 1200,
+                });
+
+                hdForm.trigger('reset');
+                hdModal.hide();
+
+                renderEvents(calendar.getDate().getMonth() + 1, calendar.getDate().getFullYear());
+            },
+
+            error: (res) => {
+                if(res.status == 422) {
+                    const errors = (res.responseJSON).errors;
+                    renderFormError(hdForm, errors);
+                }
+            },
+        });
+    }
+
+    function editEvent() {
+        $.ajax({
+            url: `/holidays/${activeEventId}`,
+            method: 'POST',
+            dataType: 'JSON',
+            data: hdForm.serialize() + '&_method=PUT',
+            success: (res) => {
+                Swal.fire({
+                    icon: 'success',
+                    text: res.message,
+                    timer: 1200,
+                });
+
+                hdForm.trigger('reset');
+                hdModal.hide();
+
+                renderEvents(calendar.getDate().getMonth() + 1, calendar.getDate().getFullYear());
+            },
+
+            error: (res) => {
+                if(res.status == 422) {
+                    const errors = (res.responseJSON).errors;
+                    renderFormError(hdForm, errors);
+                }
+            },
+        });
+    }
+
+    hdForm.submit(function(e) {
+        e.preventDefault();
+        resetFormError(hdForm);
+
+        if(!activeEventId) {
+            addEvent();
+            return;
+        }
+
+        editEvent();
+    });
+
+    delEvent.click(function() {
+        $.ajax({
+            url: `/holidays/${activeEventId}/delete`,
+            method: 'POST',
+            dataType: 'JSON',
+            data: '_method=DELETE',
+            success: (res) => {
+                Swal.fire({
+                    icon: 'success',
+                    text: res.message,
+                    timer: 1200,
+                });
+
+                hdModal.hide();
+                renderEvents(calendar.getDate().getMonth() + 1, calendar.getDate().getFullYear());
+            },
+
+            error: (res) => {
+                Swal.fire({
+                    icon: 'error',
+                    text: 'Gagal menghapus hari libur',
+                    timer: 1200,
+                });
+
+                hdModal.hide();
+            },
+        });
+    });
+
     $('body').on('click', '.fc-prev-button, .fc-next-button, .fc-today-button', function() {
         const month = calendar.getDate().getMonth() + 1;
         const year = calendar.getDate().getFullYear();
 
         renderEvents(month, year);
+    });
+
+    modal.addEventListener('show.bs.modal', () => {
+        $('#modal-title').text(activeEventId ? 'Edit Hari Libur' : 'Tambah Hari Libur');
+
+        if(!activeEventId) {
+            delEvent.addClass('d-none');
+            delEvent.removeClass('d-inline-block');
+        } else {
+            delEvent.attr('data-id', activeEventId);
+            delEvent.addClass('d-inline-block');
+            delEvent.removeClass('d-none');
+        }
+
+    });
+
+    modal.addEventListener('hide.bs.modal', () => {
+        activeEventId = null;
+        hdForm.trigger('reset');
+        resetFormError(hdForm);
     });
 
     renderEvents(dateNow.getMonth() + 1, dateNow.getFullYear());

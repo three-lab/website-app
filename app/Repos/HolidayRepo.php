@@ -49,7 +49,8 @@ class HolidayRepo
 
         $conn = $this->holiday->conn();
         $stmt = $conn->prepare("SELECT * FROM holidays WHERE
-            YEAR(date_start) = :year AND MONTH(date_start) = :month");
+            YEAR(date_start) = :year AND MONTH(date_start) = :month OR
+            (YEAR(date_end) = :year AND MONTH(date_end) >= :month)");
 
         $stmt->execute([
             'year' => $year,

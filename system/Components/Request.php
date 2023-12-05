@@ -31,6 +31,7 @@ class Request
         $this->valFactory->messages()->add($language, __('validation'));
 
         // Add custom validation
+        $this->valFactory->addRule('after_equal_date', new \System\Validation\Rules\AfterEqualDate);
         $this->valFactory->addRule('after_time', new \System\Validation\Rules\AfterTime);
         $this->valFactory->addRule('person_name', new \System\Validation\Rules\PersonName);
         $this->valFactory->addRule('unique', new Rules\Unique($dbalConn));

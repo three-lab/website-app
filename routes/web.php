@@ -55,5 +55,10 @@ Route::middleware('auth:web', function() {
 
     // Holidays
     Route::get('/holidays', [HolidayController::class, 'index']);
+    Route::get('/holidays/{id}/json', [HolidayController::class, 'show']);
+
+    Route::post('/holidays/store', [HolidayController::class, 'store']);
     Route::post('/holidays/json', [HolidayController::class, 'json']);
+    Route::put('/holidays/{id}', [HolidayController::class, 'update']);
+    Route::delete('/holidays/{id}', [HolidayController::class, 'destroy']);
 });
