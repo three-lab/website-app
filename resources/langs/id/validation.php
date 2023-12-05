@@ -2,6 +2,7 @@
 
 return [
     'rule.default' => ':attribute tidak valid.',
+    'rule.after' => ':attribute harus tanggal setelah :time.',
     'rule.alpha' => ':attribute harus berupa huruf.',
     'rule.alpha_dash' => ':attribute harus berupa huruf, angka, dan garis bawah.',
     'rule.alpha_spaces' => ':attribute harus berupa huruf, angka, dan spasi.',
@@ -14,6 +15,7 @@ return [
     'rule.exists' => ':attribute tidak valid.',
     'rule.file' => ':attribute harus berupa file.',
     'rule.image' => ':attribute harus berupa gambar.',
+    'rule.in' => ':attribute tidak valid.',
     'rule.max' => ':attribute harus terdiri dari maksimal :max karakter.',
     'rule.mimes' => ':attribute harus berupa file berformat :values.',
     'rule.min' => ':attribute harus terdiri dari minimal :min karakter.',

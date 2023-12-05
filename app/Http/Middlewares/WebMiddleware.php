@@ -4,6 +4,7 @@ namespace App\Http\Middlewares;
 
 use App\Models\User;
 use System\Components\Request;
+use System\Components\Route;
 use System\Enums\AuthGuard;
 use System\Support\Facades\Auth;
 
