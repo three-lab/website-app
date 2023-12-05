@@ -29,14 +29,11 @@ class AttendanceService
         $attStatus = $_SERVER['attendance']['status'];
         $schedules = $this->scheduleRepo->getByDaytime(date('N'), date('H:i:s'), $employee);
 
-        if($attStatus->started) {
-            $this->attendanceRepo->endPresence($employee);
-
+        if($attStatus->started)
             return (object) [
-                'status' => true,
-                'message' => 'Presensi berhasil diselesaikan',
+                'status' => false,
+                'message' => 'Presensi telah direkam',
             ];
-        }
 
         if(empty($schedules) || !$attStatus->canAttempt)
             return (object) [
@@ -56,6 +53,24 @@ class AttendanceService
         return (object) [
             'status' => true,
             'message' => 'Presensi Berhasil direkam',
+        ];
+    }
+
+    public function finishAttempt(Employee $employee)
+    {
+        $attStatus = $_SERVER['attendance']['status'];
+
+        if(!$attStatus->started)
+            return (object) [
+                'status' => false,
+                'message' => 'Anda belum melakukan presensi',
+            ];
+
+        $this->attendanceRepo->endPresence($employee);
+
+        return (object) [
+            'status' => true,
+            'message' => 'Presensi berhasil diakhiri',
         ];
     }
 

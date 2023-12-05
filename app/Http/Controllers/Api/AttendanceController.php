@@ -36,6 +36,16 @@ class AttendanceController
         $this->success(message: $attempt->message, code: 200);
     }
 
+    public function finishAttempt()
+    {
+        $finish = $this->attendanceService->finishAttempt(Auth::user());
+
+        if(!$finish->status)
+            return $this->error(message: $finish->message, code: 422);
+
+        $this->success(message: $finish->message, code: 200);
+    }
+
     public function excuse(ExcuseRequest $request)
     {
         $this->excuseRepo->add(
