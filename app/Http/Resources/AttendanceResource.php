@@ -9,6 +9,7 @@ class AttendanceResource extends Resource
     protected function toArray(): array
     {
         $data = [
+            'id' => $this->id,
             'employee' => [
                 'id' => $this->employee->id,
                 'fullname' => $this->employee->fullname,

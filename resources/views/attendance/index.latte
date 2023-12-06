@@ -111,6 +111,27 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" tabindex="-1" id="detail-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title">Detail Presensi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="detail-detail">
+                <ul class="list-group">
+                    <li class="list-group-item">Tanggal: <span id="detail-date"></span></li>
+                    <li class="list-group-item">Waktu Mulai: <span id="detail-time_start"></span></li>
+                    <li class="list-group-item">Waktu Akhir: <span id="detail-time_end"></span></li>
+                    <li class="list-group-item">Pegawai: <span id="detail-employee"></span></li>
+                    <li class="list-group-item">Mapel: <span id="detail-subject"></span></li>
+                    <li class="list-group-item">Surat Izin: <a id="detail-izin">Lihat</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 {/block}
 
 {block script}

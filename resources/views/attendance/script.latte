@@ -1,7 +1,7 @@
 <script n:syntax="double">
     function generateDailyContent(att) {
         return `<div class="col-md-4">
-            <div class="card today-attendance">
+            <div class="card today-attendance attendance-item" data-id="${att.id}" style="cursor:pointer;">
                 ${attendanceStatusIcon(att.status)}
 
                 <div class="card-body">
@@ -60,7 +60,7 @@
                 allContainer.html('');
 
                 res.map((attendance) => {
-                    allContainer.append(`<tr>
+                    allContainer.append(`<tr class="attendance-item" data-id="${attendance.id}" style="cursor:pointer;">
                         <td>${attendance.employee.fullname}</td>
                         <td>${attendance.subject.name}</td>
                         <td>${moment(attendance.date).format('DD/MM/YYYY')}</td>
@@ -72,6 +72,35 @@
             },
         });
     }
+
+    const detailModal = new bootstrap.Modal('#detail-modal');
+
+    $('body').on('click', '.attendance-item', function() {
+        $.ajax({
+            url: `/attendances/${this.dataset.id}`,
+            dataType: 'JSON',
+            success: (res) => {
+                for(key in res) {
+                    if(key == 'izin') {
+                        $('#detail-izin').attr('href', res[key]);
+                        $('#detail-izin').html('Lihat');
+
+                        if(res[key] == null) {
+                            $('#detail-izin').attr('href', '');
+                            $('#detail-izin').html('-');
+                        }
+
+                        return;
+                    }
+
+                    $(`#detail-${key}`).html(res[key]);
+                    detailModal.show();
+                }
+            },
+        });
+    });
+
+
 
     setDailyContent();
     setAllContent();

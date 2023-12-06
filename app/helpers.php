@@ -78,3 +78,19 @@ if(!function_exists('months')) {
         return $months;
     }
 }
+
+if(!function_exists('countDifftime')) {
+    function countDifftime($timestamp1, $timestamp2) {
+        $diffSec = abs($timestamp1 - $timestamp2);
+        $diffMins = floor($diffSec / 60);
+        $diffHours = floor($diffMins / 60);
+
+        if($diffHours > 0 && $diffMins & 60 > 0) {
+            return $diffHours + ' jam ' + ($diffMins % 60) + ' menit';
+        } else if($diffHours > 0) {
+            return $diffHours + ' jam';
+        } else {
+            return $diffMins + ' menit';
+        }
+    }
+}

@@ -149,6 +149,7 @@ class AttendanceRepo
     private function getMappedRelation(object $attendance, ?Schedule $schedule = null): object
     {
         $mappedData = [
+            'id' => $attendance->id,
             'status' => $attendance->status,
             'date' => $attendance->date,
             'time_start' => $attendance->time_start,

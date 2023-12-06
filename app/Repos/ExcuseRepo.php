@@ -36,6 +36,19 @@ class ExcuseRepo
         $this->updateExuceStatus();
     }
 
+    public function getByEmployee(Employee $employee, string $date)
+    {
+        $conn = $this->excuse->conn();
+        $stmt = $conn->prepare("SELECT * FROM excuses WHERE date_start >= :date AND date_end <= :date AND employee_id = :id LIMIT 1");
+
+        $stmt->execute([
+            'date' => $date,
+            'id' => $employee->id,
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
     public function updateExuceStatus()
     {
         $conn = $this->excuse->conn();
