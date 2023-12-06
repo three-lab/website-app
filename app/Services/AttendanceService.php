@@ -31,7 +31,7 @@ class AttendanceService
 
         if($attStatus->started)
             return (object) [
-                'status' => false,
+                'status' => true,
                 'message' => 'Presensi telah direkam',
             ];
 
