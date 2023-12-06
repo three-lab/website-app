@@ -5,6 +5,7 @@ use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SubjectController;
 use System\Components\Route;
@@ -12,6 +13,8 @@ use System\Components\Route;
 require_once __DIR__ . '/auth.php';
 
 Route::middleware('auth:web', function() {
+    Route::get('/', [HomeController::class, 'index']);
+
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/dashboard/chart', [DashboardController::class, 'chartJson']);
 
