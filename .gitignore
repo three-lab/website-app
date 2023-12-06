@@ -2,5 +2,5 @@
 .env
 .env.testing
 public/images/employees
-public/images/excuses
+public/excuses
 config/holidays.json
