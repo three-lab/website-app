@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Api\Auth\ChangePasswordRequest;
 use App\Models\Employee;
 use App\Http\Requests\Api\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Api\Auth\LoginRequest;
@@ -68,5 +69,19 @@ class AuthController
     {
         $user = EmployeeResource::make(Auth::user());
         return $this->success(compact('user'));
+    }
+
+    public function changePassword(ChangePasswordRequest $request)
+    {
+        $user = Auth::user();
+
+        if(!Auth::attempt(['username' => $user->username], $request->old_password))
+            return $this->error(message: 'Password tidak sesuai', code: 401);
+
+        $user->update([
+            'password' => password($request->new_password),
+        ]);
+
+        return $this->success(message: 'Berhasil mereset password');
     }
 }

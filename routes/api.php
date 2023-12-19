@@ -15,6 +15,7 @@ Route::post('/reset-pass', [AuthController::class, 'resetPass']);
 Route::middleware('auth:api', function() {
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/user', [UserController::class, 'update']);
+    Route::post('/change-pass', [AuthController::class, 'changePassword']);
     Route::get('/schedules', [ScheduleController::class, 'index']);
 
     Route::prefix('/attendances', function() {
