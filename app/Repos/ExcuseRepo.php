@@ -39,7 +39,7 @@ class ExcuseRepo
     public function getByEmployee(Employee $employee, string $date)
     {
         $conn = $this->excuse->conn();
-        $stmt = $conn->prepare("SELECT * FROM excuses WHERE date_start >= :date AND date_end <= :date AND employee_id = :id LIMIT 1");
+        $stmt = $conn->prepare("SELECT * FROM excuses WHERE :date BETWEEN date_start AND date_end AND employee_id = :id LIMIT 1");
 
         $stmt->execute([
             'date' => $date,

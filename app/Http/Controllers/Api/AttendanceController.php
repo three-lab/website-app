@@ -49,6 +49,9 @@ class AttendanceController
 
     public function excuse(ExcuseRequest $request)
     {
+        if($this->excuseRepo->getByEmployee(Auth::user(), date('Y-m-d')))
+            return $this->error(message: 'Sudah terdapat izin', code: 422);
+
         $this->excuseRepo->add(
             Auth::user(),
             $request->file('file'),
