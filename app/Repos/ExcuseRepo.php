@@ -53,7 +53,7 @@ class ExcuseRepo
     {
         $conn = $this->excuse->conn();
         $stmt = $conn->prepare("UPDATE attendances SET status = 'excused' WHERE employee_id IN(
-            SELECT employee_id FROM excuses WHERE date_start >= :date AND date_end <= :date GROUP BY(employee_id)
+            SELECT employee_id FROM excuses WHERE :date BETWEEN date_start AND date_end GROUP BY employee_id
         ) AND date = :date");
 
         $stmt->execute([

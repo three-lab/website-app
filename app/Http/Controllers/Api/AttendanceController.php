@@ -10,6 +10,7 @@ use App\Repos\ExcuseRepo;
 use App\Services\AttendanceService;
 use App\Traits\ApiResponser;
 use System\Support\Facades\Auth;
+use System\Support\Facades\Pusher;
 
 class AttendanceController
 {
@@ -54,6 +55,7 @@ class AttendanceController
             $request->validated()
         );
 
+        Pusher::trigger('attendance-updated', []);
         return $this->success(message: 'Berhasil menambahkan izin');
     }
 
