@@ -117,6 +117,21 @@ class AttendanceService
 
         $attempted = $stmt->fetchAll(PDO::FETCH_OBJ);
         $needAttempt = $needAttempt[0] ?? (object) ['employee_id' => null, 'subject_id' => null];
+        $availAttendances = false;
+
+        if(!is_null($needAttempt->subject_id)) {
+            $attStmt = $conn->prepare("SELECT * FROM attendances WHERE employee_id = :employee_id
+                AND subject_id = :subject_id AND date = :date");
+
+            $attStmt->execute([
+                'employee_id' => $employee->id,
+                'subject_id' => $needAttempt->subject_id,
+                'date' => date('Y-m-d'),
+            ]);
+
+            if($attStmt->fetch(PDO::FETCH_ASSOC))
+                $availAttendances = true;
+        }
 
         $isFinished = array_filter($attempted, function($att) use($needAttempt) {
             $cond1 = ($att->subject_id == $needAttempt->subject_id);
@@ -126,7 +141,7 @@ class AttendanceService
         });
 
         return [
-            'canAttempt' => !is_null($needAttempt->subject_id) && empty($isFinished),
+            'canAttempt' => !is_null($needAttempt->subject_id) && empty($isFinished) && $availAttendances,
             'scanned' => !empty(array_filter($attempted, fn($att) => $att->time_start)),
             'started' => !empty(array_filter($attempted, fn($att) => $att->time_start && !$att->time_end)),
         ];
